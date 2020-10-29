@@ -1,5 +1,7 @@
 package com.deviget.minesweeper.util;
 
+import com.deviget.minesweeper.exception.CellNotFoundException;
+import com.deviget.minesweeper.model.dto.Board;
 import com.deviget.minesweeper.model.dto.Cell;
 
 import java.util.Random;
@@ -113,5 +115,20 @@ public final class CellUtils {
 	 */
 	public static int getRandomCellPosition(int boundary) {
 		return (new Random().nextInt(boundary - 1) + 1);
+	}
+
+	/**
+	 * Finds a cell in the current board and flags it.-
+	 *
+	 * @param board    the board containing the cell
+	 * @param flagCell the cell to flag
+	 * @return the flagged Cell
+	 */
+	public static Cell flagCell(Board board, Cell flagCell) throws CellNotFoundException {
+		Cell cellFound = board.getCellList().stream().filter(cell -> cell.getXCoordinate() == flagCell.getXCoordinate()
+				&& cell.getYCoordinate() == flagCell.getYCoordinate()).findAny()
+				.orElseThrow(() -> new CellNotFoundException(flagCell));
+		cellFound.setFlagged(true);
+		return cellFound;
 	}
 }
