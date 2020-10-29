@@ -1,6 +1,7 @@
 package com.deviget.minesweeper.util;
 
 import com.deviget.minesweeper.exception.CellNotFoundException;
+import com.deviget.minesweeper.exception.GameOverException;
 import com.deviget.minesweeper.model.dto.Board;
 import com.deviget.minesweeper.model.dto.Cell;
 import com.deviget.minesweeper.model.enums.FlagTypeEnum;
@@ -127,10 +128,37 @@ public final class CellUtils {
 	 * @return the flagged Cell
 	 */
 	public static Cell flagCell(Board board, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException {
-		Cell cellFound = board.getCellList().stream().filter(cell -> cell.getXCoordinate() == flagCell.getXCoordinate()
-				&& cell.getYCoordinate() == flagCell.getYCoordinate()).findAny()
-				.orElseThrow(() -> new CellNotFoundException(flagCell));
+		Cell cellFound = retrieveCellFromBoard(board, flagCell);
 		cellFound.setFlagType(flagType);
 		return cellFound;
+	}
+
+	/**
+	 * Finds a cell in the current board and reveals it.-
+	 *
+	 * @param board    the board containing the cell
+	 * @param flagCell the cell to reveal
+	 * @return the flagged Cell
+	 */
+	public static Cell revealCell(Board board, Cell flagCell) throws CellNotFoundException, GameOverException {
+		Cell cellFound = retrieveCellFromBoard(board, flagCell);
+		if (cellFound.isMine()) {
+			throw new GameOverException();
+		}
+		cellFound.setRevealed(true);
+		return cellFound;
+	}
+
+	/**
+	 * Retrieves a specific cell from its board.-
+	 *
+	 * @param board          the board to retrieve the cell from
+	 * @param cellToRetrieve the cell data to retrieve
+	 * @return the cell if found
+	 */
+	private static Cell retrieveCellFromBoard(Board board, Cell cellToRetrieve) {
+		return board.getCellList().stream().filter(cell -> cell.getXCoordinate() == cellToRetrieve.getXCoordinate()
+				&& cell.getYCoordinate() == cellToRetrieve.getYCoordinate()).findAny()
+				.orElseThrow(() -> new CellNotFoundException(cellToRetrieve));
 	}
 }

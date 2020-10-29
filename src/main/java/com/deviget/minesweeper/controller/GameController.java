@@ -2,6 +2,8 @@ package com.deviget.minesweeper.controller;
 
 import com.deviget.minesweeper.exception.ExistingCellException;
 import com.deviget.minesweeper.exception.GameNotFoundException;
+import com.deviget.minesweeper.exception.GameOverException;
+import com.deviget.minesweeper.exception.InvalidGameStatusException;
 import com.deviget.minesweeper.model.dto.Cell;
 import com.deviget.minesweeper.model.dto.Game;
 import com.deviget.minesweeper.model.enums.FlagTypeEnum;
@@ -33,16 +35,6 @@ public class GameController {
 	@Autowired
 	private IUserService userService;
 
-	@PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-			MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> revealCell(@RequestParam("xCoordinate") int xCoordinate,
-	                                         @RequestParam("yCoordinate") int yCoordinate) {
-		log.info("revealCell:: Entering Reveal Cell endpoint with coordinates: [x,y] -> [{}{}]...", xCoordinate,
-				yCoordinate);
-
-		return ResponseEntity.ok("Checked ok!");
-	}
-
 	/**
 	 * Flags a cell in the current game's board.-
 	 */
@@ -61,6 +53,9 @@ public class GameController {
 		} catch (GameNotFoundException e) {
 			log.error("flagCell:: Game {} was not found !", gameId, e);
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		} catch (InvalidGameStatusException e) {
+			log.error("flagCell:: Game {} is in an finished state !", gameId, e);
+			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
 		}
 
 		try {
@@ -74,5 +69,44 @@ public class GameController {
 		}
 
 		return new ResponseEntity<Cell>(flagCell, HttpStatus.OK);
+	}
+
+
+	/**
+	 * Reveals a cell in the current game's board.-
+	 */
+	@PutMapping(value = "/{gameId}/reveal-cell", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+			MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cell> revealCell(@NotNull @PathVariable Integer gameId,
+	                                       @NotNull @RequestBody Cell revealCell) {
+
+		log.info("revealCell:: Entering Reveal Cell for game {} and cell coordinates [{},{}] ...", gameId,
+				revealCell.getXCoordinate(), revealCell.getYCoordinate());
+		Game game;
+		try {
+			game = gameService.findById(gameId);
+		} catch (GameNotFoundException e) {
+			log.error("revealCell:: Game {} was not found !", gameId, e);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		} catch (InvalidGameStatusException e) {
+			log.error("flagCell:: Game {} is in an finished state !", gameId, e);
+			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+		}
+
+		try {
+			revealCell = gameService.revealCell(game, revealCell);
+		} catch (GameNotFoundException e) {
+			log.error("revealCell:: Cell {} was not found !", revealCell, e);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+		} catch (ExistingCellException e) {
+			log.error("revealCell:: Cell {} already exists !", revealCell, e);
+			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+		} catch (GameOverException e) {
+			gameService.endGame(game);
+			log.error("revealCell:: CELL {} HAD A MINE ! BOOM - GAME OVER !", revealCell, e);
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+		}
+
+		return new ResponseEntity<Cell>(revealCell, HttpStatus.OK);
 	}
 }

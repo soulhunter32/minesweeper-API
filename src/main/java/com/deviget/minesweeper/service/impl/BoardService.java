@@ -4,7 +4,6 @@ import com.deviget.minesweeper.exception.InvalidBoardSettingsException;
 import com.deviget.minesweeper.model.dto.Board;
 import com.deviget.minesweeper.model.dto.BoardSettings;
 import com.deviget.minesweeper.model.dto.Cell;
-import com.deviget.minesweeper.model.enums.BoardStatusEnum;
 import com.deviget.minesweeper.repository.IUserRepository;
 import com.deviget.minesweeper.service.IBoardService;
 import com.deviget.minesweeper.util.BoardUtils;
@@ -65,7 +64,6 @@ public class BoardService implements IBoardService {
 
 		currentBoard = Board.builder()
 				.settings(settings)
-				.status(BoardStatusEnum.IN_ṔROGRESS)
 				.build();
 
 		populateCells();

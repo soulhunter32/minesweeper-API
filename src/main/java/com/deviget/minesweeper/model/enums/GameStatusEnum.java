@@ -1,9 +1,9 @@
 package com.deviget.minesweeper.model.enums;
 
 /**
- * Represents a Board Status.-
+ * Represents a Game Status.-
  */
-public enum BoardStatusEnum {
+public enum GameStatusEnum {
 	IN_ṔROGRESS,
 	PAUSED,
 	COMPLETED,

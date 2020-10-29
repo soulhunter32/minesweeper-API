@@ -1,5 +1,6 @@
 package com.deviget.minesweeper.model.dto;
 
+import com.deviget.minesweeper.model.enums.GameStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,13 @@ public class Game implements Serializable {
 
 	private static final long serialVersionUID = 9123734699152341971L;
 
+	private int id;
+
 	@Builder.Default
 	private Board board = Board.builder().build();
+
+	@Builder.Default
+	private GameStatusEnum status = GameStatusEnum.IN_ṔROGRESS;
 
 	private User user;
 }

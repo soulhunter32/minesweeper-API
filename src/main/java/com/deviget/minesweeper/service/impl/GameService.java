@@ -1,11 +1,9 @@
 package com.deviget.minesweeper.service.impl;
 
-import com.deviget.minesweeper.exception.CellNotFoundException;
-import com.deviget.minesweeper.exception.ExistingCellException;
-import com.deviget.minesweeper.exception.GameNotFoundException;
-import com.deviget.minesweeper.exception.InvalidBoardSettingsException;
+import com.deviget.minesweeper.exception.*;
 import com.deviget.minesweeper.model.dto.*;
 import com.deviget.minesweeper.model.enums.FlagTypeEnum;
+import com.deviget.minesweeper.model.enums.GameStatusEnum;
 import com.deviget.minesweeper.repository.IGameRepository;
 import com.deviget.minesweeper.repository.IUserRepository;
 import com.deviget.minesweeper.service.IBoardService;
@@ -72,9 +70,13 @@ public class GameService implements IGameService {
 	 * @throws GameNotFoundException if the game was not found
 	 */
 	@Override
-	public Game findById(Integer gameId) throws GameNotFoundException {
-		return modelMapper.map((gameRepository.findById(gameId).orElseThrow(() -> new GameNotFoundException(gameId))),
-				Game.class);
+	public Game findById(Integer gameId) throws GameNotFoundException, InvalidGameStatusException {
+		com.deviget.minesweeper.model.entity.Game gameFound =
+				gameRepository.findById(gameId).orElseThrow(() -> new GameNotFoundException(gameId));
+		if (gameFound.isOver()) {
+			throw new InvalidGameStatusException(gameFound.getStatus());
+		}
+		return modelMapper.map(gameFound, Game.class);
 	}
 
 	/**
@@ -89,6 +91,33 @@ public class GameService implements IGameService {
 	public Cell flagCell(Game game, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException,
 			ExistingCellException {
 		return cellService.saveCell(CellUtils.flagCell(game.getBoard(), flagCell, flagType));
+	}
+
+	/**
+	 * Reveals the current cell for the current game.-
+	 *
+	 * @param game       the game where the board' s cell is located
+	 * @param revealCell the cell to reveal
+	 * @return the revealed cell
+	 * @throws CellNotFoundException
+	 * @throws ExistingCellException
+	 */
+	@Override
+	public Cell revealCell(Game game, Cell revealCell) throws CellNotFoundException, ExistingCellException,
+			GameOverException {
+		return cellService.saveCell(CellUtils.revealCell(game.getBoard(), revealCell));
+	}
+
+	/**
+	 * Ends the current game.-
+	 *
+	 * @param game the game to end
+	 */
+	@Override
+	public void endGame(Game game) {
+		com.deviget.minesweeper.model.entity.Game gameToEnd = gameRepository.findById(game.getId()).get();
+		gameToEnd.setStatus(GameStatusEnum.FAILED);
+		gameRepository.saveAndFlush(gameToEnd);
 	}
 
 	/**

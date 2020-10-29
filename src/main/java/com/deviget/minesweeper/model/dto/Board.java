@@ -1,6 +1,5 @@
 package com.deviget.minesweeper.model.dto;
 
-import com.deviget.minesweeper.model.enums.BoardStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -28,9 +27,6 @@ public class Board implements Serializable {
 	private static final long serialVersionUID = -8267658033441946043L;
 
 	private int id;
-
-	@Builder.Default
-	private BoardStatusEnum status = BoardStatusEnum.IN_ṔROGRESS;
 
 	private BoardSettings settings;
 
