@@ -1,5 +1,6 @@
 package com.deviget.minesweeper.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Game implements Serializable {
 
 	private static final long serialVersionUID = 9123734699152341971L;

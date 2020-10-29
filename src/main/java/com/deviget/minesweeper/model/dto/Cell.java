@@ -1,6 +1,6 @@
 package com.deviget.minesweeper.model.dto;
 
-import com.deviget.minesweeper.model.enums.CellRevealState;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Cell implements Serializable {
 
 	private static final long serialVersionUID = 4415817349508249234L;
@@ -28,9 +29,9 @@ public class Cell implements Serializable {
 	private int xCoordinate;
 	private int yCoordinate;
 
-	@Builder.Default
-	private CellRevealState revealState = CellRevealState.NON_REVEALED;
+	private boolean isRevealed = false;
+	private boolean isFlagged = false;
+	private boolean isMine = false;
 
-	@Builder.Default
-	private CellRevealState flagState = CellRevealState.NON_REVEALED;
+	private int adjacentMines = 0;
 }

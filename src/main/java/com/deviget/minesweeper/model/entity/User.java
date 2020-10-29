@@ -28,6 +28,6 @@ public class User extends BaseEntity {
 	private String username;
 
 	@Builder.Default
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Game> gameList = new ArrayList<>();
 }

@@ -1,6 +1,10 @@
 package com.deviget.minesweeper.model.entity;
 
+import com.deviget.minesweeper.model.dto.BoardSettings;
+import com.deviget.minesweeper.model.enums.BoardStatus;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,6 +27,14 @@ public class Board extends BaseEntity {
 	private int id;
 
 	@Builder.Default
+	private BoardStatus status = BoardStatus.IN_ṔROGRESS;
+
+	@Embedded
+	@Cascade(CascadeType.ALL)
+	private BoardSettings settings;
+
+	@Builder.Default
 	@OneToMany
+	@Cascade(CascadeType.ALL)
 	private List<Cell> cellList = new ArrayList<>();
 }

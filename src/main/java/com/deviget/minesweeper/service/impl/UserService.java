@@ -22,7 +22,7 @@ public class UserService implements IUserService {
 	@Autowired
 	private IUserRepository userRepository;
 
-	ModelMapper modelMapper = new ModelMapper();
+	private final ModelMapper modelMapper = new ModelMapper();
 
 	@Override
 	public User findById(int userId) throws UserNotFoundException {

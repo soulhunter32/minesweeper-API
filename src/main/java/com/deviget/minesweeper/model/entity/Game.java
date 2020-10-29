@@ -2,6 +2,7 @@ package com.deviget.minesweeper.model.entity;
 
 import lombok.*;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 
@@ -23,7 +24,7 @@ public class Game extends BaseEntity {
 
 	@Builder.Default
 	@OneToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
+	@Cascade(CascadeType.ALL)
 	private Board board = Board.builder().build();
 
 	@ManyToOne(fetch = FetchType.EAGER)

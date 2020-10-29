@@ -1,6 +1,5 @@
 package com.deviget.minesweeper.model.entity;
 
-import com.deviget.minesweeper.model.enums.CellRevealState;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,9 +23,9 @@ public class Cell extends BaseEntity {
 	private int xCoordinate;
 	private int yCoordinate;
 
-	@Builder.Default
-	private CellRevealState revealState = CellRevealState.NON_REVEALED;
+	private boolean isRevealed = false;
+	private boolean isFlagged = false;
+	private boolean isMine = false;
 
-	@Builder.Default
-	private CellRevealState flagState = CellRevealState.NON_REVEALED;
+	private int adjacentMines = 0;
 }
