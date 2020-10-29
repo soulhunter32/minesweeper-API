@@ -1,10 +1,13 @@
 package com.deviget.minesweeper.util;
 
+import com.deviget.minesweeper.exception.CellFlaggedException;
 import com.deviget.minesweeper.exception.CellNotFoundException;
 import com.deviget.minesweeper.exception.GameOverException;
 import com.deviget.minesweeper.model.dto.Board;
 import com.deviget.minesweeper.model.dto.Cell;
+import com.deviget.minesweeper.model.dto.Game;
 import com.deviget.minesweeper.model.enums.FlagTypeEnum;
+import com.deviget.minesweeper.model.enums.GameStatusEnum;
 
 import java.util.Random;
 
@@ -127,26 +130,53 @@ public final class CellUtils {
 	 * @param flagType the type of the flag
 	 * @return the flagged Cell
 	 */
-	public static Cell flagCell(Board board, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException {
+	public static Cell flagCell(Board board, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException,
+			CellFlaggedException {
 		Cell cellFound = retrieveCellFromBoard(board, flagCell);
-		cellFound.setFlagType(flagType);
+		if (!cellFound.isRevealed()) {
+			cellFound.setFlagType(flagType);
+		} else {
+			throw new CellFlaggedException(cellFound);
+		}
 		return cellFound;
 	}
 
 	/**
-	 * Finds a cell in the current board and reveals it.-
+	 * Finds a cell in the current game and reveals it. If the cell to reveal has no adjacent mines, it automatically
+	 * reveals all boundary cells until adjacents mines are found. If all cells were revealed, the game is completed
+	 * and the game won,
 	 *
-	 * @param board    the board containing the cell
+	 * @param game     the game containing the cell
 	 * @param flagCell the cell to reveal
 	 * @return the flagged Cell
 	 */
-	public static Cell revealCell(Board board, Cell flagCell) throws CellNotFoundException, GameOverException {
-		Cell cellFound = retrieveCellFromBoard(board, flagCell);
+	public static Cell revealCell(Game game, Cell flagCell) throws CellNotFoundException, GameOverException {
+		Cell cellFound = retrieveCellFromBoard(game.getBoard(), flagCell);
 		if (cellFound.isMine()) {
 			throw new GameOverException();
+		} else if (!cellFound.isMine() && cellFound.getAdjacentMines() == 0) {
+			revealNonMineCells(game.getBoard(), cellFound);
+			cellFound.setRevealed(true);
 		}
-		cellFound.setRevealed(true);
+
+		if (BoardUtils.isGameComplete(game.getBoard())) {
+			game.setStatus(GameStatusEnum.COMPLETED);
+		}
 		return cellFound;
+	}
+
+	/**
+	 * Finds  all boundary cells until adjacents mines are found.-
+	 *
+	 * @param board    the board containing the cell
+	 * @param mainCell the center cell to find its boundary cells
+	 */
+	private static void revealNonMineCells(Board board, Cell mainCell) throws CellNotFoundException,
+			GameOverException {
+
+		mainCell.setRevealed(true);
+		BoardUtils.findBoundaryCells(board, mainCell).stream().filter(c -> !c.isRevealed() && c.getAdjacentMines() == 0).
+				forEach(c -> revealNonMineCells(board, c));
 	}
 
 	/**

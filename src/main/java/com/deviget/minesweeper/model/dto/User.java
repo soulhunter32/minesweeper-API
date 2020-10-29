@@ -1,5 +1,6 @@
 package com.deviget.minesweeper.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class User implements Serializable {
 
 	private String username;
 
+	@JsonIgnore
 	@Builder.Default
 	private List<Game> gameList = new ArrayList<>();
 }

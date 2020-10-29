@@ -18,7 +18,7 @@ public interface IGameService {
 	Cell flagCell(Game game, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException, ExistingCellException;
 
 	Cell revealCell(Game game, Cell flagCell) throws CellNotFoundException,
-			ExistingCellException, GameOverException;
+			ExistingCellException, GameOverException, CellFlaggedException;
 
 	void endGame(Game game);
 }

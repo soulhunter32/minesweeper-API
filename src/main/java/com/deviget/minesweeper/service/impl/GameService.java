@@ -89,7 +89,7 @@ public class GameService implements IGameService {
 	 */
 	@Override
 	public Cell flagCell(Game game, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException,
-			ExistingCellException {
+			ExistingCellException, CellFlaggedException {
 		return cellService.saveCell(CellUtils.flagCell(game.getBoard(), flagCell, flagType));
 	}
 
@@ -105,7 +105,7 @@ public class GameService implements IGameService {
 	@Override
 	public Cell revealCell(Game game, Cell revealCell) throws CellNotFoundException, ExistingCellException,
 			GameOverException {
-		return cellService.saveCell(CellUtils.revealCell(game.getBoard(), revealCell));
+		return cellService.saveCell(CellUtils.revealCell(game, revealCell));
 	}
 
 	/**

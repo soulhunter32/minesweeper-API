@@ -1,12 +1,10 @@
 package com.deviget.minesweeper.controller;
 
-import com.deviget.minesweeper.exception.ExistingCellException;
-import com.deviget.minesweeper.exception.GameNotFoundException;
-import com.deviget.minesweeper.exception.GameOverException;
-import com.deviget.minesweeper.exception.InvalidGameStatusException;
+import com.deviget.minesweeper.exception.*;
 import com.deviget.minesweeper.model.dto.Cell;
 import com.deviget.minesweeper.model.dto.Game;
 import com.deviget.minesweeper.model.enums.FlagTypeEnum;
+import com.deviget.minesweeper.model.enums.GameStatusEnum;
 import com.deviget.minesweeper.service.IGameService;
 import com.deviget.minesweeper.service.IUserService;
 import com.sun.istack.NotNull;
@@ -66,6 +64,9 @@ public class GameController {
 		} catch (ExistingCellException e) {
 			log.error("flagCell:: Cell {} already exists !", flagCell, e);
 			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+		} catch (CellFlaggedException e) {
+			log.error("flagCell:: Cell {} is already flagged and cannot be revealed !", flagCell, e);
+			throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
 		}
 
 		return new ResponseEntity<Cell>(flagCell, HttpStatus.OK);
@@ -107,6 +108,9 @@ public class GameController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 
+		if (GameStatusEnum.COMPLETED.equals(game.getStatus())) {
+			gameService.saveGame(game);
+		}
 		return new ResponseEntity<Cell>(revealCell, HttpStatus.OK);
 	}
 }

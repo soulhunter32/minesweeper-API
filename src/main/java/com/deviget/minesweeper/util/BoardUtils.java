@@ -3,8 +3,8 @@ package com.deviget.minesweeper.util;
 import com.deviget.minesweeper.model.dto.Board;
 import com.deviget.minesweeper.model.dto.Cell;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Board Utility helper.-
@@ -21,9 +21,7 @@ public final class BoardUtils {
 	 */
 	public static List<Cell> findBoundaryCells(Board board, Cell cell) {
 
-		List<Cell> boundaryCellList = new ArrayList<>();
-
-		board.getCellList().stream().filter(c ->
+		return (board.getCellList().stream().filter(c ->
 				CellUtils.isLeftUpperBoundary(cell, c) ||
 						CellUtils.isLeftBoundary(cell, c) ||
 						CellUtils.isLeftLowerBoundary(cell, c) ||
@@ -31,8 +29,16 @@ public final class BoardUtils {
 						CellUtils.isRightUpperBoundary(cell, c) ||
 						CellUtils.isRightBoundary(cell, c) ||
 						CellUtils.isRightLowerBoundary(cell, c)
-		).findFirst().ifPresent(boundaryCellList::add);
+		).collect(Collectors.toList()));
+	}
 
-		return boundaryCellList;
+	/**
+	 * Verifies if all no mine cell are revealed.-
+	 *
+	 * @param board the board to verify
+	 * @return true if the board is complete, false if not
+	 */
+	public static boolean isGameComplete(Board board) {
+		return board.getCellList().stream().anyMatch(c -> (!c.isMine()) && c.isRevealed());
 	}
 }
