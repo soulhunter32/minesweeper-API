@@ -15,6 +15,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 /**
  * Service in charge of all game related functionalities.-
  */
@@ -116,6 +119,13 @@ public class GameService implements IGameService {
 	@Override
 	public void endGame(Game game) {
 		com.deviget.minesweeper.model.entity.Game gameToEnd = gameRepository.findById(game.getId()).get();
+		gameToEnd.setEndTime(LocalDateTime.now());
+
+
+		Duration elapsedTime = Duration.between(gameToEnd.getCreateTime(), gameToEnd.getEndTime());
+
+		gameToEnd.setElapsedTime(String.valueOf(elapsedTime.toMinutesPart()).concat(" minutes and ")
+				.concat(String.valueOf(elapsedTime.toSecondsPart())));
 		gameToEnd.setStatus(GameStatusEnum.FAILED);
 		gameRepository.saveAndFlush(gameToEnd);
 	}
@@ -128,6 +138,7 @@ public class GameService implements IGameService {
 	 */
 	@Override
 	public Game saveGame(Game game) {
+		game.setEditTime(LocalDateTime.now());
 		return modelMapper.map(
 				gameRepository.save(modelMapper.map(game, com.deviget.minesweeper.model.entity.Game.class)),
 				Game.class);

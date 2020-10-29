@@ -1,15 +1,15 @@
 package com.deviget.minesweeper.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 /**
  * Base entity for shared information.-
  */
+@Data
 public class BaseEntity {
-	@JsonIgnore
-	private final LocalDateTime createTime = LocalDateTime.now();
-	@JsonIgnore
-	private final LocalDateTime editTime = LocalDateTime.now();
+	protected final LocalDateTime createTime = LocalDateTime.now();
+	protected LocalDateTime editTime = LocalDateTime.now();
+	protected LocalDateTime endTime;
 }

@@ -37,6 +37,8 @@ public class Game extends BaseEntity {
 	@Builder.Default
 	private GameStatusEnum status = GameStatusEnum.IN_ṔROGRESS;
 
+	private String elapsedTime;
+
 	/**
 	 * Checks if a board is over, whether is completed or failed.-
 	 *

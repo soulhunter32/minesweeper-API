@@ -156,8 +156,8 @@ public final class CellUtils {
 			throw new GameOverException();
 		} else if (!cellFound.isMine() && cellFound.getAdjacentMines() == 0) {
 			revealNonMineCells(game.getBoard(), cellFound);
-			cellFound.setRevealed(true);
 		}
+		cellFound.setRevealed(true);
 
 		if (BoardUtils.isGameComplete(game.getBoard())) {
 			game.setStatus(GameStatusEnum.COMPLETED);

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.websocket.server.PathParam;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -109,6 +110,7 @@ public class GameController {
 		}
 
 		if (GameStatusEnum.COMPLETED.equals(game.getStatus())) {
+			game.setEndTime(LocalDateTime.now());
 			gameService.saveGame(game);
 		}
 		return new ResponseEntity<Cell>(revealCell, HttpStatus.OK);

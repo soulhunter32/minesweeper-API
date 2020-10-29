@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +28,9 @@ public class Board implements Serializable {
 	private static final long serialVersionUID = -8267658033441946043L;
 
 	private int id;
-
 	private BoardSettings settings;
+	private final LocalDateTime createTime = LocalDateTime.now();
+	private final LocalDateTime editTime = LocalDateTime.now();
 
 	@Builder.Default
 	private List<Cell> cellList = new ArrayList<>();
