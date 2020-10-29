@@ -8,6 +8,7 @@ import com.deviget.minesweeper.model.dto.BoardSettings;
 import com.deviget.minesweeper.model.dto.Cell;
 import com.deviget.minesweeper.model.dto.Game;
 import com.deviget.minesweeper.model.dto.User;
+import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 
 public interface IGameService {
 
@@ -17,5 +18,5 @@ public interface IGameService {
 
 	Game findById(Integer gameId) throws GameNotFoundException;
 
-	Cell flagCell(Game game, Cell flagCell) throws CellNotFoundException, ExistingCellException;
+	Cell flagCell(Game game, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException, ExistingCellException;
 }

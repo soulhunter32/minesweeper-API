@@ -5,6 +5,7 @@ import com.deviget.minesweeper.exception.ExistingCellException;
 import com.deviget.minesweeper.exception.GameNotFoundException;
 import com.deviget.minesweeper.exception.InvalidBoardSettingsException;
 import com.deviget.minesweeper.model.dto.*;
+import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 import com.deviget.minesweeper.repository.IGameRepository;
 import com.deviget.minesweeper.repository.IUserRepository;
 import com.deviget.minesweeper.service.IBoardService;
@@ -81,11 +82,13 @@ public class GameService implements IGameService {
 	 *
 	 * @param game     the current game
 	 * @param flagCell the cell to flag
+	 * @param flagType the type of flag to assign
 	 * @return the flagged cell
 	 */
 	@Override
-	public Cell flagCell(Game game, Cell flagCell) throws CellNotFoundException, ExistingCellException {
-		return cellService.saveCell(CellUtils.flagCell(game.getBoard(), flagCell));
+	public Cell flagCell(Game game, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException,
+			ExistingCellException {
+		return cellService.saveCell(CellUtils.flagCell(game.getBoard(), flagCell, flagType));
 	}
 
 	/**

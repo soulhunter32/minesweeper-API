@@ -1,5 +1,6 @@
 package com.deviget.minesweeper.model.dto;
 
+import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -31,7 +33,21 @@ public class Cell implements Serializable {
 
 	private boolean isRevealed = false;
 	private boolean isFlagged = false;
+
 	private boolean isMine = false;
 
 	private int adjacentMines = 0;
+
+	private FlagTypeEnum flagType;
+
+	/**
+	 * Flags the cell with the corresponding flag.-
+	 *
+	 * @param flagType the flag type
+	 */
+	public void setFlagType(FlagTypeEnum flagType) {
+		this.flagType = flagType;
+		setFlagged(!Objects.isNull(flagType));
+	}
+
 }

@@ -1,7 +1,7 @@
 package com.deviget.minesweeper.model.entity;
 
 import com.deviget.minesweeper.model.dto.BoardSettings;
-import com.deviget.minesweeper.model.enums.BoardStatus;
+import com.deviget.minesweeper.model.enums.BoardStatusEnum;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -27,7 +27,7 @@ public class Board extends BaseEntity {
 	private int id;
 
 	@Builder.Default
-	private BoardStatus status = BoardStatus.IN_ṔROGRESS;
+	private BoardStatusEnum status = BoardStatusEnum.IN_ṔROGRESS;
 
 	@Embedded
 	@Cascade(CascadeType.ALL)

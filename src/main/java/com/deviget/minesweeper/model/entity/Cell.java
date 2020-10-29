@@ -1,5 +1,6 @@
 package com.deviget.minesweeper.model.entity;
 
+import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,4 +29,6 @@ public class Cell extends BaseEntity {
 	private boolean isMine = false;
 
 	private int adjacentMines = 0;
+
+	private FlagTypeEnum flagType;
 }
