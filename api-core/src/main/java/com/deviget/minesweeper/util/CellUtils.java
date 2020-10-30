@@ -164,6 +164,7 @@ public final class CellUtils {
         if (BoardUtils.isGameComplete(game.getBoard())) {
             log.info("revealCell:: Game complete !");
             game.setStatus(GameStatusEnum.COMPLETED);
+            GameUtils.setElapsedTime(game);
         }
         return cellFound;
     }

@@ -22,30 +22,32 @@ import java.util.Collections;
 @Table(name = "game")
 public class Game extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	@Builder.Default
-	@OneToOne
-	@Cascade(CascadeType.ALL)
-	private Board board = Board.builder().build();
+    private int score = 0;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private User user;
+    @Builder.Default
+    @OneToOne
+    @Cascade(CascadeType.ALL)
+    private Board board = Board.builder().build();
 
-	@Builder.Default
-	private GameStatusEnum status = GameStatusEnum.IN_ṔROGRESS;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User user;
 
-	private String elapsedTime;
+    @Builder.Default
+    private GameStatusEnum status = GameStatusEnum.IN_ṔROGRESS;
 
-	/**
-	 * Checks if a board is over, whether is completed or failed.-
-	 *
-	 * @return true if its completed or failed, false otherwise
-	 */
-	public boolean isOver() {
-		return CollectionUtils.containsAny(Collections.singletonList(getStatus()),
-				Arrays.asList(GameStatusEnum.COMPLETED, GameStatusEnum.FAILED));
-	}
+    private String elapsedTime;
+
+    /**
+     * Checks if a board is over, whether is completed or failed.-
+     *
+     * @return true if its completed or failed, false otherwise
+     */
+    public boolean isOver() {
+        return CollectionUtils.containsAny(Collections.singletonList(getStatus()),
+                Arrays.asList(GameStatusEnum.COMPLETED, GameStatusEnum.FAILED));
+    }
 }
