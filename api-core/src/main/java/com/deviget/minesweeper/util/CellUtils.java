@@ -8,187 +8,190 @@ import com.deviget.minesweeper.model.dto.Cell;
 import com.deviget.minesweeper.model.dto.Game;
 import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 import com.deviget.minesweeper.model.enums.GameStatusEnum;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.Random;
 
 /**
  * Cell Utility helper.-
  */
+@Log4j2
 public final class CellUtils {
 
-	/**
-	 * Evaluates if a cell is right-boundary to the center cell.-
-	 *
-	 * @param centerCell the main center cell
-	 * @param targetCell the target cell to evaluate
-	 * @return tru if the targetCell us right-boundary to the centerCell
-	 */
-	public static boolean isRightBoundary(Cell centerCell, Cell targetCell) {
-		return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
-				&& targetCell.getYCoordinate() == centerCell.getYCoordinate();
-	}
+    /**
+     * Evaluates if a cell is right-boundary to the center cell.-
+     *
+     * @param centerCell the main center cell
+     * @param targetCell the target cell to evaluate
+     * @return tru if the targetCell us right-boundary to the centerCell
+     */
+    public static boolean isRightBoundary(Cell centerCell, Cell targetCell) {
+        return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
+                && targetCell.getYCoordinate() == centerCell.getYCoordinate();
+    }
 
-	/**
-	 * Evaluates if a cell is right-upper-boundary to the center cell.-
-	 *
-	 * @param centerCell the main center cell
-	 * @param targetCell the target cell to evaluate
-	 * @return tru if the targetCell us right-upper-boundary to the centerCell
-	 */
-	public static boolean isRightUpperBoundary(Cell centerCell, Cell targetCell) {
-		return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
-				&& targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
-	}
+    /**
+     * Evaluates if a cell is right-upper-boundary to the center cell.-
+     *
+     * @param centerCell the main center cell
+     * @param targetCell the target cell to evaluate
+     * @return tru if the targetCell us right-upper-boundary to the centerCell
+     */
+    public static boolean isRightUpperBoundary(Cell centerCell, Cell targetCell) {
+        return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
+                && targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
+    }
 
-	/**
-	 * Evaluates if a cell is right-lower-boundary to the center cell.-
-	 *
-	 * @param centerCell the main center cell
-	 * @param targetCell the target cell to evaluate
-	 * @return tru if the targetCell us right-lower-boundary to the centerCell
-	 */
-	public static boolean isRightLowerBoundary(Cell centerCell, Cell targetCell) {
-		return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
-				&& targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
-	}
+    /**
+     * Evaluates if a cell is right-lower-boundary to the center cell.-
+     *
+     * @param centerCell the main center cell
+     * @param targetCell the target cell to evaluate
+     * @return tru if the targetCell us right-lower-boundary to the centerCell
+     */
+    public static boolean isRightLowerBoundary(Cell centerCell, Cell targetCell) {
+        return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
+                && targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
+    }
 
-	/**
-	 * Evaluates if a cell is upper-boundary to the center cell.-
-	 *
-	 * @param centerCell the main center cell
-	 * @param targetCell the target cell to evaluate
-	 * @return tru if the targetCell us upper-boundary to the centerCell
-	 */
-	public static boolean isUpperBoundary(Cell centerCell, Cell targetCell) {
-		return targetCell.getXCoordinate() == centerCell.getXCoordinate()
-				&& targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
-	}
+    /**
+     * Evaluates if a cell is upper-boundary to the center cell.-
+     *
+     * @param centerCell the main center cell
+     * @param targetCell the target cell to evaluate
+     * @return tru if the targetCell us upper-boundary to the centerCell
+     */
+    public static boolean isUpperBoundary(Cell centerCell, Cell targetCell) {
+        return targetCell.getXCoordinate() == centerCell.getXCoordinate()
+                && targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
+    }
 
-	/**
-	 * Evaluates if a cell is lower-boundary to the center cell.-
-	 *
-	 * @param centerCell the main center cell
-	 * @param targetCell the target cell to evaluate
-	 * @return tru if the targetCell us lower-boundary to the centerCell
-	 */
-	public static boolean isLowerBoundary(Cell centerCell, Cell targetCell) {
-		return targetCell.getXCoordinate() == centerCell.getXCoordinate()
-				&& targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
-	}
+    /**
+     * Evaluates if a cell is lower-boundary to the center cell.-
+     *
+     * @param centerCell the main center cell
+     * @param targetCell the target cell to evaluate
+     * @return tru if the targetCell us lower-boundary to the centerCell
+     */
+    public static boolean isLowerBoundary(Cell centerCell, Cell targetCell) {
+        return targetCell.getXCoordinate() == centerCell.getXCoordinate()
+                && targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
+    }
 
 
-	/**
-	 * Evaluates if a cell is left-boundary to the center cell.-
-	 *
-	 * @param centerCell the main center cell
-	 * @param targetCell the target cell to evaluate
-	 * @return tru if the targetCell us left-boundary to the centerCell
-	 */
-	public static boolean isLeftBoundary(Cell centerCell, Cell targetCell) {
-		return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
-				&& targetCell.getYCoordinate() == centerCell.getYCoordinate();
-	}
+    /**
+     * Evaluates if a cell is left-boundary to the center cell.-
+     *
+     * @param centerCell the main center cell
+     * @param targetCell the target cell to evaluate
+     * @return tru if the targetCell us left-boundary to the centerCell
+     */
+    public static boolean isLeftBoundary(Cell centerCell, Cell targetCell) {
+        return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
+                && targetCell.getYCoordinate() == centerCell.getYCoordinate();
+    }
 
-	/**
-	 * Evaluates if a cell is left-upper-boundary to the center cell.-
-	 *
-	 * @param centerCell the main center cell
-	 * @param targetCell the target cell to evaluate
-	 * @return tru if the targetCell us left-upper-boundary to the centerCell
-	 */
-	public static boolean isLeftUpperBoundary(Cell centerCell, Cell targetCell) {
-		return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
-				&& targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
-	}
+    /**
+     * Evaluates if a cell is left-upper-boundary to the center cell.-
+     *
+     * @param centerCell the main center cell
+     * @param targetCell the target cell to evaluate
+     * @return tru if the targetCell us left-upper-boundary to the centerCell
+     */
+    public static boolean isLeftUpperBoundary(Cell centerCell, Cell targetCell) {
+        return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
+                && targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
+    }
 
-	/**
-	 * Evaluates if a cell is left-lower-boundary to the center cell.-
-	 *
-	 * @param centerCell the main center cell
-	 * @param targetCell the target cell to evaluate
-	 * @return tru if the targetCell us left-lower-boundary to the centerCell
-	 */
-	public static boolean isLeftLowerBoundary(Cell centerCell, Cell targetCell) {
-		return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
-				&& targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
-	}
+    /**
+     * Evaluates if a cell is left-lower-boundary to the center cell.-
+     *
+     * @param centerCell the main center cell
+     * @param targetCell the target cell to evaluate
+     * @return tru if the targetCell us left-lower-boundary to the centerCell
+     */
+    public static boolean isLeftLowerBoundary(Cell centerCell, Cell targetCell) {
+        return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
+                && targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
+    }
 
-	/**
-	 * Retrieves a random position for the current board.-
-	 *
-	 * @return a random board position
-	 */
-	public static int getRandomCellPosition(int boundary) {
-		return (new Random().nextInt(boundary - 1) + 1);
-	}
+    /**
+     * Retrieves a random position for the current board.-
+     *
+     * @return a random board position
+     */
+    public static int getRandomCellPosition(int boundary) {
+        return (new Random().nextInt(boundary - 1) + 1);
+    }
 
-	/**
-	 * Finds a cell in the current board and flags it.-
-	 *
-	 * @param board    the board containing the cell
-	 * @param flagCell the cell to flag
-	 * @param flagType the type of the flag
-	 * @return the flagged Cell
-	 */
-	public static Cell flagCell(Board board, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException,
-			CellFlaggedException {
-		Cell cellFound = retrieveCellFromBoard(board, flagCell);
-		if (!cellFound.isRevealed()) {
-			cellFound.setFlagType(flagType);
-		} else {
-			throw new CellFlaggedException(cellFound);
-		}
-		return cellFound;
-	}
+    /**
+     * Finds a cell in the current board and flags it.-
+     *
+     * @param board    the board containing the cell
+     * @param flagCell the cell to flag
+     * @param flagType the type of the flag
+     * @return the flagged Cell
+     */
+    public static Cell flagCell(Board board, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException,
+            CellFlaggedException {
+        Cell cellFound = retrieveCellFromBoard(board, flagCell);
+        if (!cellFound.isRevealed()) {
+            cellFound.setFlagType(flagType);
+        } else {
+            throw new CellFlaggedException(cellFound);
+        }
+        return cellFound;
+    }
 
-	/**
-	 * Finds a cell in the current game and reveals it. If the cell to reveal has no adjacent mines, it automatically
-	 * reveals all boundary cells until adjacents mines are found. If all cells were revealed, the game is completed
-	 * and the game won,
-	 *
-	 * @param game     the game containing the cell
-	 * @param flagCell the cell to reveal
-	 * @return the flagged Cell
-	 */
-	public static Cell revealCell(Game game, Cell flagCell) throws CellNotFoundException, GameOverException {
-		Cell cellFound = retrieveCellFromBoard(game.getBoard(), flagCell);
-		if (cellFound.isMine()) {
-			throw new GameOverException();
-		} else if (!cellFound.isMine() && cellFound.getAdjacentMines() == 0) {
-			revealNonMineCells(game.getBoard(), cellFound);
-		}
-		cellFound.setRevealed(true);
+    /**
+     * Finds a cell in the current game and reveals it. If the cell to reveal has no adjacent mines, it automatically
+     * reveals all boundary cells until adjacents mines are found. If all cells were revealed, the game is completed
+     * and the game won,
+     *
+     * @param game     the game containing the cell
+     * @param flagCell the cell to reveal
+     * @return the flagged Cell
+     */
+    public static Cell revealCell(Game game, Cell flagCell) throws CellNotFoundException, GameOverException {
+        Cell cellFound = retrieveCellFromBoard(game.getBoard(), flagCell);
+        if (cellFound.isMine()) {
+            throw new GameOverException();
+        } else if (!cellFound.isMine() && cellFound.getAdjacentMines() == 0) {
+            revealNonMineCells(game.getBoard(), cellFound);
+        }
+        cellFound.setRevealed(true);
 
-		if (BoardUtils.isGameComplete(game.getBoard())) {
-			game.setStatus(GameStatusEnum.COMPLETED);
-		}
-		return cellFound;
-	}
+        if (BoardUtils.isGameComplete(game.getBoard())) {
+            log.info("revealCell:: Game complete !");
+            game.setStatus(GameStatusEnum.COMPLETED);
+        }
+        return cellFound;
+    }
 
-	/**
-	 * Finds  all boundary cells until adjacents mines are found.-
-	 *
-	 * @param board    the board containing the cell
-	 * @param mainCell the center cell to find its boundary cells
-	 */
-	private static void revealNonMineCells(Board board, Cell mainCell) throws CellNotFoundException,
-			GameOverException {
+    /**
+     * Finds  all boundary cells until adjacents mines are found.-
+     *
+     * @param board    the board containing the cell
+     * @param mainCell the center cell to find its boundary cells
+     */
+    private static void revealNonMineCells(Board board, Cell mainCell) throws CellNotFoundException,
+            GameOverException {
 
-		mainCell.setRevealed(true);
-		BoardUtils.findBoundaryCells(board, mainCell).stream().filter(c -> !c.isRevealed() && c.getAdjacentMines() == 0).
-				forEach(c -> revealNonMineCells(board, c));
-	}
+        mainCell.setRevealed(true);
+        BoardUtils.findBoundaryCells(board, mainCell).stream().filter(c -> !c.isRevealed() && c.getAdjacentMines() == 0).
+                forEach(c -> revealNonMineCells(board, c));
+    }
 
-	/**
-	 * Retrieves a specific cell from its board.-
-	 *
-	 * @param board          the board to retrieve the cell from
-	 * @param cellToRetrieve the cell data to retrieve
-	 * @return the cell if found
-	 */
-	private static Cell retrieveCellFromBoard(Board board, Cell cellToRetrieve) {
-		return board.getCellList().stream().filter(cell -> cell.getXCoordinate() == cellToRetrieve.getXCoordinate()
-				&& cell.getYCoordinate() == cellToRetrieve.getYCoordinate()).findAny()
-				.orElseThrow(() -> new CellNotFoundException(cellToRetrieve));
-	}
+    /**
+     * Retrieves a specific cell from its board.-
+     *
+     * @param board          the board to retrieve the cell from
+     * @param cellToRetrieve the cell data to retrieve
+     * @return the cell if found
+     */
+    private static Cell retrieveCellFromBoard(Board board, Cell cellToRetrieve) {
+        return board.getCellList().stream().filter(cell -> cell.getXCoordinate() == cellToRetrieve.getXCoordinate()
+                && cell.getYCoordinate() == cellToRetrieve.getYCoordinate()).findAny()
+                .orElseThrow(() -> new CellNotFoundException(cellToRetrieve));
+    }
 }
