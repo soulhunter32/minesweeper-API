@@ -16,8 +16,8 @@ public final class GameUtils {
      *
      * @param game the game to set the elapsed time
      */
-    public static void setElapsedTime(Game game) {
-        Duration elapsedTime = Duration.between(game.getCreateTime(), game.getEndTime());
+    public static void setElapsedTime(final Game game) {
+        final Duration elapsedTime = Duration.between(game.getCreateTime(), game.getEndTime());
         game.setElapsedTime(String.valueOf(elapsedTime.toMinutesPart()).concat(" minutes and ")
                 .concat(String.valueOf(elapsedTime.toSecondsPart())));
     }

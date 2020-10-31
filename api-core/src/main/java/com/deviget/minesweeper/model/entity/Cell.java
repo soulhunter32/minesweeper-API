@@ -22,10 +22,13 @@ public class Cell extends BaseEntity {
     private int id;
 
     private int xCoordinate;
+
     private int yCoordinate;
 
     private boolean isRevealed = false;
+
     private boolean isFlagged = false;
+
     private boolean isMine = false;
 
     private int adjacentMines = 0;

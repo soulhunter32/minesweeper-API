@@ -56,7 +56,7 @@ public class GameService implements IGameService {
         final com.deviget.minesweeper.model.entity.Game newGame = modelMapper.map(game,
                 com.deviget.minesweeper.model.entity.Game.class);
 
-        newGame.setUser(userRepository.findById(user.getUserId()).get());
+        newGame.setUser(userRepository.findById(user.getId()).get());
 
         return modelMapper.map(gameRepository.save(newGame), Game.class);
     }
@@ -114,12 +114,14 @@ public class GameService implements IGameService {
      */
     @Override
     public void endGame(final Game game) {
-        final com.deviget.minesweeper.model.entity.Game gameToEnd = gameRepository.findById(game.getId()).get();
-        gameToEnd.setEndTime(LocalDateTime.now());
-
+        game.setEndTime(LocalDateTime.now());
         GameUtils.setElapsedTime(game);
 
+        final com.deviget.minesweeper.model.entity.Game gameToEnd = gameRepository.findById(game.getId()).get();
+        gameToEnd.setElapsedTime(game.getElapsedTime());
         gameToEnd.setStatus(GameStatusEnum.FAILED);
+        gameToEnd.setEndTime(LocalDateTime.now());
+
         gameRepository.saveAndFlush(gameToEnd);
     }
 

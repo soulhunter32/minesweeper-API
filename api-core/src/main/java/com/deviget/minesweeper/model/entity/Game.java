@@ -37,7 +37,7 @@ public class Game extends BaseEntity {
     private User user;
 
     @Builder.Default
-    private GameStatusEnum status = GameStatusEnum.IN_ṔROGRESS;
+    private GameStatusEnum status = GameStatusEnum.IN_PROGRESS;
 
     private String elapsedTime;
 

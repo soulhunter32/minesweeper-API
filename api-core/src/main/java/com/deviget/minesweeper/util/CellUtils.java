@@ -10,6 +10,7 @@ import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 import com.deviget.minesweeper.model.enums.GameStatusEnum;
 import lombok.extern.log4j.Log4j2;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 /**
@@ -25,7 +26,7 @@ public final class CellUtils {
      * @param targetCell the target cell to evaluate
      * @return tru if the targetCell us right-boundary to the centerCell
      */
-    public static boolean isRightBoundary(Cell centerCell, Cell targetCell) {
+    public static boolean isRightBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
                 && targetCell.getYCoordinate() == centerCell.getYCoordinate();
     }
@@ -37,7 +38,7 @@ public final class CellUtils {
      * @param targetCell the target cell to evaluate
      * @return tru if the targetCell us right-upper-boundary to the centerCell
      */
-    public static boolean isRightUpperBoundary(Cell centerCell, Cell targetCell) {
+    public static boolean isRightUpperBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
                 && targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
     }
@@ -49,7 +50,7 @@ public final class CellUtils {
      * @param targetCell the target cell to evaluate
      * @return tru if the targetCell us right-lower-boundary to the centerCell
      */
-    public static boolean isRightLowerBoundary(Cell centerCell, Cell targetCell) {
+    public static boolean isRightLowerBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
                 && targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
     }
@@ -61,7 +62,7 @@ public final class CellUtils {
      * @param targetCell the target cell to evaluate
      * @return tru if the targetCell us upper-boundary to the centerCell
      */
-    public static boolean isUpperBoundary(Cell centerCell, Cell targetCell) {
+    public static boolean isUpperBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate()
                 && targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
     }
@@ -73,7 +74,7 @@ public final class CellUtils {
      * @param targetCell the target cell to evaluate
      * @return tru if the targetCell us lower-boundary to the centerCell
      */
-    public static boolean isLowerBoundary(Cell centerCell, Cell targetCell) {
+    public static boolean isLowerBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate()
                 && targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
     }
@@ -86,7 +87,7 @@ public final class CellUtils {
      * @param targetCell the target cell to evaluate
      * @return tru if the targetCell us left-boundary to the centerCell
      */
-    public static boolean isLeftBoundary(Cell centerCell, Cell targetCell) {
+    public static boolean isLeftBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
                 && targetCell.getYCoordinate() == centerCell.getYCoordinate();
     }
@@ -98,7 +99,7 @@ public final class CellUtils {
      * @param targetCell the target cell to evaluate
      * @return tru if the targetCell us left-upper-boundary to the centerCell
      */
-    public static boolean isLeftUpperBoundary(Cell centerCell, Cell targetCell) {
+    public static boolean isLeftUpperBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
                 && targetCell.getYCoordinate() == centerCell.getYCoordinate() + 1;
     }
@@ -110,7 +111,7 @@ public final class CellUtils {
      * @param targetCell the target cell to evaluate
      * @return tru if the targetCell us left-lower-boundary to the centerCell
      */
-    public static boolean isLeftLowerBoundary(Cell centerCell, Cell targetCell) {
+    public static boolean isLeftLowerBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
                 && targetCell.getYCoordinate() == centerCell.getYCoordinate() - 1;
     }
@@ -120,7 +121,7 @@ public final class CellUtils {
      *
      * @return a random board position
      */
-    public static int getRandomCellPosition(int boundary) {
+    public static int getRandomCellPosition(final int boundary) {
         return (new Random().nextInt(boundary - 1) + 1);
     }
 
@@ -132,9 +133,9 @@ public final class CellUtils {
      * @param flagType the type of the flag
      * @return the flagged Cell
      */
-    public static Cell flagCell(Board board, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException,
+    public static Cell flagCell(final Board board, final Cell flagCell, final FlagTypeEnum flagType) throws CellNotFoundException,
             CellFlaggedException {
-        Cell cellFound = retrieveCellFromBoard(board, flagCell);
+        final Cell cellFound = retrieveCellFromBoard(board, flagCell);
         if (!cellFound.isRevealed()) {
             cellFound.setFlagType(flagType);
         } else {
@@ -152,8 +153,8 @@ public final class CellUtils {
      * @param flagCell the cell to reveal
      * @return the flagged Cell
      */
-    public static Cell revealCell(Game game, Cell flagCell) throws CellNotFoundException, GameOverException {
-        Cell cellFound = retrieveCellFromBoard(game.getBoard(), flagCell);
+    public static Cell revealCell(final Game game, final Cell flagCell) throws CellNotFoundException, GameOverException {
+        final Cell cellFound = retrieveCellFromBoard(game.getBoard(), flagCell);
         if (cellFound.isMine()) {
             throw new GameOverException();
         } else if (!cellFound.isMine() && cellFound.getAdjacentMines() == 0) {
@@ -164,6 +165,7 @@ public final class CellUtils {
         if (BoardUtils.isGameComplete(game.getBoard())) {
             log.info("revealCell:: Game complete !");
             game.setStatus(GameStatusEnum.COMPLETED);
+            game.setEndTime(LocalDateTime.now());
             GameUtils.setElapsedTime(game);
         }
         return cellFound;
@@ -175,7 +177,7 @@ public final class CellUtils {
      * @param board    the board containing the cell
      * @param mainCell the center cell to find its boundary cells
      */
-    private static void revealNonMineCells(Board board, Cell mainCell) throws CellNotFoundException,
+    private static void revealNonMineCells(final Board board, final Cell mainCell) throws CellNotFoundException,
             GameOverException {
 
         mainCell.setRevealed(true);
@@ -190,7 +192,7 @@ public final class CellUtils {
      * @param cellToRetrieve the cell data to retrieve
      * @return the cell if found
      */
-    private static Cell retrieveCellFromBoard(Board board, Cell cellToRetrieve) {
+    private static Cell retrieveCellFromBoard(final Board board, final Cell cellToRetrieve) {
         return board.getCellList().stream().filter(cell -> cell.getXCoordinate() == cellToRetrieve.getXCoordinate()
                 && cell.getYCoordinate() == cellToRetrieve.getYCoordinate()).findAny()
                 .orElseThrow(() -> new CellNotFoundException(cellToRetrieve));
