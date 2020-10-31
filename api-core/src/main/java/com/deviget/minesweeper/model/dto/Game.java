@@ -25,12 +25,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 9123734699152341971L;
-
+    private final LocalDateTime createTime = LocalDateTime.now();
     private int score = 0;
-
     private int id;
     private User user;
-    private final LocalDateTime createTime = LocalDateTime.now();
     private LocalDateTime editTime = LocalDateTime.now();
     private LocalDateTime endTime;
     private String elapsedTime;

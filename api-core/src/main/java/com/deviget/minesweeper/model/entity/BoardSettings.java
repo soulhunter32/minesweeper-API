@@ -14,7 +14,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class BoardSettings {
 
-	private int width;
-	private int height;
-	private int totalMines;
+    private int width;
+    private int height;
+    private int totalMines;
 }

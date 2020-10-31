@@ -25,13 +25,13 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements Serializable {
 
-	private static final long serialVersionUID = -6626786360493165143L;
+    private static final long serialVersionUID = -6626786360493165143L;
 
-	private int userId;
+    private int userId;
 
-	private String username;
+    private String username;
 
-	@JsonIgnore
-	@Builder.Default
-	private List<Game> gameList = new ArrayList<>();
+    @JsonIgnore
+    @Builder.Default
+    private List<Game> gameList = new ArrayList<>();
 }

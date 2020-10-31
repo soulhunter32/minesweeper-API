@@ -25,19 +25,15 @@ import java.time.LocalDateTime;
 @Service
 public class GameService implements IGameService {
 
+    private final ModelMapper modelMapper = new ModelMapper();
     @Autowired
     private IGameRepository gameRepository;
-
     @Autowired
     private IBoardService boardService;
-
     @Autowired
     private ICellService cellService;
-
     @Autowired
     private IUserRepository userRepository;
-
-    private final ModelMapper modelMapper = new ModelMapper();
 
     /**
      * Creates a new game for the current user with the current settings.-
@@ -48,16 +44,16 @@ public class GameService implements IGameService {
      * @throws InvalidBoardSettingsException if the {@link BoardService} are not valid
      */
     @Override
-    public Game createGame(User user, BoardSettings boardSettings) throws InvalidBoardSettingsException {
-        Game game = Game.builder()
+    public Game createGame(final User user, final BoardSettings boardSettings) throws InvalidBoardSettingsException {
+        final Game game = Game.builder()
                 .user(user)
                 .board(Board.builder().settings(boardSettings).build())
                 .build();
-        Board board = boardService.startBoard(game.getBoard(), boardSettings);
+        final Board board = boardService.startBoard(game.getBoard(), boardSettings);
 
         game.setBoard(board);
 
-        com.deviget.minesweeper.model.entity.Game newGame = modelMapper.map(game,
+        final com.deviget.minesweeper.model.entity.Game newGame = modelMapper.map(game,
                 com.deviget.minesweeper.model.entity.Game.class);
 
         newGame.setUser(userRepository.findById(user.getUserId()).get());
@@ -73,8 +69,8 @@ public class GameService implements IGameService {
      * @throws GameNotFoundException if the game was not found
      */
     @Override
-    public Game findById(Integer gameId) throws GameNotFoundException, InvalidGameStatusException {
-        com.deviget.minesweeper.model.entity.Game gameFound =
+    public Game findById(final Integer gameId) throws GameNotFoundException, InvalidGameStatusException {
+        final com.deviget.minesweeper.model.entity.Game gameFound =
                 gameRepository.findById(gameId).orElseThrow(() -> new GameNotFoundException(gameId));
         if (gameFound.isOver()) {
             throw new InvalidGameStatusException(gameFound.getStatus());
@@ -91,7 +87,7 @@ public class GameService implements IGameService {
      * @return the flagged cell
      */
     @Override
-    public Cell flagCell(Game game, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException,
+    public Cell flagCell(final Game game, final Cell flagCell, final FlagTypeEnum flagType) throws CellNotFoundException,
             ExistingCellException, CellFlaggedException {
         return cellService.saveCell(CellUtils.flagCell(game.getBoard(), flagCell, flagType));
     }
@@ -106,7 +102,7 @@ public class GameService implements IGameService {
      * @throws ExistingCellException
      */
     @Override
-    public Cell revealCell(Game game, Cell revealCell) throws CellNotFoundException, ExistingCellException,
+    public Cell revealCell(final Game game, final Cell revealCell) throws CellNotFoundException, ExistingCellException,
             GameOverException {
         return cellService.saveCell(CellUtils.revealCell(game, revealCell));
     }
@@ -117,8 +113,8 @@ public class GameService implements IGameService {
      * @param game the game to end
      */
     @Override
-    public void endGame(Game game) {
-        com.deviget.minesweeper.model.entity.Game gameToEnd = gameRepository.findById(game.getId()).get();
+    public void endGame(final Game game) {
+        final com.deviget.minesweeper.model.entity.Game gameToEnd = gameRepository.findById(game.getId()).get();
         gameToEnd.setEndTime(LocalDateTime.now());
 
         GameUtils.setElapsedTime(game);
@@ -134,7 +130,7 @@ public class GameService implements IGameService {
      * @return the current saved game
      */
     @Override
-    public Game saveGame(Game game) {
+    public Game saveGame(final Game game) {
         game.setEditTime(LocalDateTime.now());
         return modelMapper.map(
                 gameRepository.save(modelMapper.map(game, com.deviget.minesweeper.model.entity.Game.class)),

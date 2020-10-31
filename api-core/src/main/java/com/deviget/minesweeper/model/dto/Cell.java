@@ -24,30 +24,30 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Cell implements Serializable {
 
-	private static final long serialVersionUID = 4415817349508249234L;
+    private static final long serialVersionUID = 4415817349508249234L;
 
-	private int id;
+    private int id;
 
-	private int xCoordinate;
-	private int yCoordinate;
+    private int xCoordinate;
+    private int yCoordinate;
 
-	private boolean isRevealed = false;
-	private boolean isFlagged = false;
+    private boolean isRevealed = false;
+    private boolean isFlagged = false;
 
-	private boolean isMine = false;
+    private boolean isMine = false;
 
-	private int adjacentMines = 0;
+    private int adjacentMines = 0;
 
-	private FlagTypeEnum flagType;
+    private FlagTypeEnum flagType;
 
-	/**
-	 * Flags the cell with the corresponding flag.-
-	 *
-	 * @param flagType the flag type
-	 */
-	public void setFlagType(FlagTypeEnum flagType) {
-		this.flagType = flagType;
-		setFlagged(!Objects.isNull(flagType));
-	}
+    /**
+     * Flags the cell with the corresponding flag.-
+     *
+     * @param flagType the flag type
+     */
+    public void setFlagType(final FlagTypeEnum flagType) {
+        this.flagType = flagType;
+        setFlagged(!Objects.isNull(flagType));
+    }
 
 }

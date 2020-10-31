@@ -16,26 +16,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class CellService implements ICellService {
 
-	@Autowired
-	private ICellRepository cellRepository;
+    private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ICellRepository cellRepository;
 
-	private final ModelMapper modelMapper = new ModelMapper();
+    /**
+     * Saves the current Cell.-
+     *
+     * @param cell the cell data to save
+     * @return the saved cell
+     * @throws ExistingCellException
+     */
+    @Override
+    public Cell saveCell(final Cell cell) throws ExistingCellException {
 
-	/**
-	 * Saves the current Cell.-
-	 *
-	 * @param cell the cell data to save
-	 * @return the saved cell
-	 * @throws ExistingCellException
-	 */
-	@Override
-	public Cell saveCell(Cell cell) throws ExistingCellException {
-
-		if (cellRepository.existsById(cell.getId())) {
-			return modelMapper.map(cellRepository.saveAndFlush(modelMapper.map(cell,
-					com.deviget.minesweeper.model.entity.Cell.class)), Cell.class);
-		} else {
-			throw new ExistingCellException(cell.getId());
-		}
-	}
+        if (cellRepository.existsById(cell.getId())) {
+            return modelMapper.map(cellRepository.saveAndFlush(modelMapper.map(cell,
+                    com.deviget.minesweeper.model.entity.Cell.class)), Cell.class);
+        } else {
+            throw new ExistingCellException(cell.getId());
+        }
+    }
 }

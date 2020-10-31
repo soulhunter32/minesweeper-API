@@ -9,16 +9,16 @@ import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 
 public interface IGameService {
 
-	Game saveGame(Game newGame);
+    Game saveGame(Game newGame);
 
-	Game createGame(User user, BoardSettings boardSettings) throws InvalidBoardSettingsException;
+    Game createGame(User user, BoardSettings boardSettings) throws InvalidBoardSettingsException;
 
-	Game findById(Integer gameId) throws GameNotFoundException, InvalidGameStatusException;
+    Game findById(Integer gameId) throws GameNotFoundException, InvalidGameStatusException;
 
-	Cell flagCell(Game game, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException, ExistingCellException;
+    Cell flagCell(Game game, Cell flagCell, FlagTypeEnum flagType) throws CellNotFoundException, ExistingCellException;
 
-	Cell revealCell(Game game, Cell flagCell) throws CellNotFoundException,
-			ExistingCellException, GameOverException, CellFlaggedException;
+    Cell revealCell(Game game, Cell flagCell) throws CellNotFoundException,
+            ExistingCellException, GameOverException, CellFlaggedException;
 
-	void endGame(Game game);
+    void endGame(Game game);
 }

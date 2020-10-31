@@ -19,31 +19,30 @@ import java.util.Objects;
 @Service
 public class UserService implements IUserService {
 
-	@Autowired
-	private IUserRepository userRepository;
+    private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private IUserRepository userRepository;
 
-	private final ModelMapper modelMapper = new ModelMapper();
+    @Override
+    public User findById(final int userId) throws UserNotFoundException {
+        return modelMapper.map((userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))),
+                User.class);
+    }
 
-	@Override
-	public User findById(int userId) throws UserNotFoundException {
-		return modelMapper.map((userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId))),
-				User.class);
-	}
+    /**
+     * Saves the current User.-
+     *
+     * @param user the user data to save
+     * @return the saved user
+     */
+    @Override
+    public User saveUser(final User user) throws ExistingUserException {
 
-	/**
-	 * Saves the current User.-
-	 *
-	 * @param user the user data to save
-	 * @return the saved user
-	 */
-	@Override
-	public User saveUser(User user) throws ExistingUserException {
-
-		if (Objects.isNull(userRepository.findByUsername(user.getUsername()))) {
-			return modelMapper.map(userRepository.save(modelMapper.map(user,
-					com.deviget.minesweeper.model.entity.User.class)), User.class);
-		} else {
-			throw new ExistingUserException(user.getUsername());
-		}
-	}
+        if (Objects.isNull(userRepository.findByUsername(user.getUsername()))) {
+            return modelMapper.map(userRepository.save(modelMapper.map(user,
+                    com.deviget.minesweeper.model.entity.User.class)), User.class);
+        } else {
+            throw new ExistingUserException(user.getUsername());
+        }
+    }
 }

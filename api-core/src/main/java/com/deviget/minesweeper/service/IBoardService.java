@@ -7,11 +7,11 @@ import com.deviget.minesweeper.model.dto.Cell;
 
 public interface IBoardService {
 
-	int revealCellIUserService(Cell cell);
+    int revealCellIUserService(Cell cell);
 
-	int findAdjacentData(Cell cell);
+    int findAdjacentData(Cell cell);
 
-	void flagCell(Cell cell);
+    void flagCell(Cell cell);
 
-	Board startBoard(Board board, BoardSettings settings) throws InvalidBoardSettingsException;
+    Board startBoard(Board board, BoardSettings settings) throws InvalidBoardSettingsException;
 }

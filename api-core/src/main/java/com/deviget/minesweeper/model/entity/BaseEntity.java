@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class BaseEntity {
-	protected final LocalDateTime createTime = LocalDateTime.now();
-	protected LocalDateTime editTime = LocalDateTime.now();
-	protected LocalDateTime endTime;
+    protected final LocalDateTime createTime = LocalDateTime.now();
+    protected LocalDateTime editTime = LocalDateTime.now();
+    protected LocalDateTime endTime;
 }

@@ -16,8 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BoardSettings {
-	
-	private int width;
-	private int height;
-	private int totalMines;
+
+    private int width;
+    private int height;
+    private int totalMines;
 }

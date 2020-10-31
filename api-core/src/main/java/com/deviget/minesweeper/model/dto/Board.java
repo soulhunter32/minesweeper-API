@@ -25,13 +25,11 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Board implements Serializable {
 
-	private static final long serialVersionUID = -8267658033441946043L;
-
-	private int id;
-	private BoardSettings settings;
-	private final LocalDateTime createTime = LocalDateTime.now();
-	private final LocalDateTime editTime = LocalDateTime.now();
-
-	@Builder.Default
-	private List<Cell> cellList = new ArrayList<>();
+    private static final long serialVersionUID = -8267658033441946043L;
+    private final LocalDateTime createTime = LocalDateTime.now();
+    private final LocalDateTime editTime = LocalDateTime.now();
+    private int id;
+    private BoardSettings settings;
+    @Builder.Default
+    private List<Cell> cellList = new ArrayList<>();
 }

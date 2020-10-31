@@ -21,16 +21,16 @@ import java.util.List;
 @Table(name = "board")
 public class Board extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	@Embedded
-	@Cascade(CascadeType.ALL)
-	private BoardSettings settings;
+    @Embedded
+    @Cascade(CascadeType.ALL)
+    private BoardSettings settings;
 
-	@Builder.Default
-	@OneToMany
-	@Cascade(CascadeType.ALL)
-	private List<Cell> cellList = new ArrayList<>();
+    @Builder.Default
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    private List<Cell> cellList = new ArrayList<>();
 }

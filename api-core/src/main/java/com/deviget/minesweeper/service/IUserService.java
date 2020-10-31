@@ -5,7 +5,7 @@ import com.deviget.minesweeper.exception.UserNotFoundException;
 import com.deviget.minesweeper.model.dto.User;
 
 public interface IUserService {
-	User findById(int userId) throws UserNotFoundException;
+    User findById(int userId) throws UserNotFoundException;
 
-	User saveUser(User user) throws ExistingUserException;
+    User saveUser(User user) throws ExistingUserException;
 }

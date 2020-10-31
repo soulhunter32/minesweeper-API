@@ -17,18 +17,18 @@ import javax.persistence.*;
 @Table(name = "cell")
 public class Cell extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	private int xCoordinate;
-	private int yCoordinate;
+    private int xCoordinate;
+    private int yCoordinate;
 
-	private boolean isRevealed = false;
-	private boolean isFlagged = false;
-	private boolean isMine = false;
+    private boolean isRevealed = false;
+    private boolean isFlagged = false;
+    private boolean isMine = false;
 
-	private int adjacentMines = 0;
+    private int adjacentMines = 0;
 
-	private FlagTypeEnum flagType;
+    private FlagTypeEnum flagType;
 }
