@@ -16,10 +16,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>api-core</name>
     <description>Minesweeper API 1.0</description>
-    <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.9</maven.compiler.source>
+        <maven.compiler.target>1.9</maven.compiler.target>
+        <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
     </properties>
 
     <dependencies>
@@ -45,12 +48,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -60,30 +57,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
-            <version>2.0.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>2.0.2</version>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -95,41 +69,56 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito2</artifactId>
+            <version>2.0.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.6</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/deviget/minesweeper/model/**/*.class</exclude>
+                        <exclude>com/deviget/minesweeper/configuration/**/*.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>default-compile</id>
-                        <phase>compile</phase>
                         <goals>
-                            <goal>compile</goal>
+                            <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <source>11</source>
-                            <target>11</target>
-                        </configuration>
                     </execution>
                     <execution>
-                        <id>default-testCompile</id>
-                        <phase>test-compile</phase>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
                         <goals>
-                            <goal>testCompile</goal>
+                            <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <source>9</source>
-                            <target>9</target>
-                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <source>9</source>
-                    <target>9</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>

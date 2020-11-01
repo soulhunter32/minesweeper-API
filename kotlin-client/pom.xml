@@ -15,10 +15,10 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>kotlin-client</name>
     <description>Minesweeper API - Kotlin Client</description>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
         <kotlin.version>1.3.72</kotlin.version>
     </properties>
 

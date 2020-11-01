@@ -2,7 +2,7 @@ package com.deviget.minesweeper.exception;
 
 import com.deviget.minesweeper.model.dto.Cell;
 
-public class CellNotFoundException extends RuntimeException {
+public class CellNotFoundException extends Exception {
 
     private static final long serialVersionUID = 4396573623121165297L;
 

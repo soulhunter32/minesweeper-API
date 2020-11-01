@@ -177,8 +177,7 @@ public final class CellUtils {
      * @param board    the board containing the cell
      * @param mainCell the center cell to find its boundary cells
      */
-    private static void revealNonMineCells(final Board board, final Cell mainCell) throws CellNotFoundException,
-            GameOverException {
+    private static void revealNonMineCells(final Board board, final Cell mainCell) {
 
         mainCell.setRevealed(true);
         BoardUtils.findBoundaryCells(board, mainCell).stream().filter(c -> !c.isRevealed() && c.getAdjacentMines() == 0).
@@ -192,7 +191,7 @@ public final class CellUtils {
      * @param cellToRetrieve the cell data to retrieve
      * @return the cell if found
      */
-    private static Cell retrieveCellFromBoard(final Board board, final Cell cellToRetrieve) {
+    private static Cell retrieveCellFromBoard(final Board board, final Cell cellToRetrieve) throws CellNotFoundException {
         return board.getCellList().stream().filter(cell -> cell.getXCoordinate() == cellToRetrieve.getXCoordinate()
                 && cell.getYCoordinate() == cellToRetrieve.getYCoordinate()).findAny()
                 .orElseThrow(() -> new CellNotFoundException(cellToRetrieve));

@@ -5,14 +5,14 @@ import com.deviget.minesweeper.model.dto.*;
 import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 import com.deviget.minesweeper.model.enums.GameStatusEnum;
 import com.deviget.minesweeper.repository.IGameRepository;
-import com.deviget.minesweeper.repository.IUserRepository;
 import com.deviget.minesweeper.service.IBoardService;
 import com.deviget.minesweeper.service.ICellService;
 import com.deviget.minesweeper.service.IGameService;
+import com.deviget.minesweeper.service.IUserService;
 import com.deviget.minesweeper.util.CellUtils;
 import com.deviget.minesweeper.util.GameUtils;
+import com.deviget.minesweeper.util.ModelMapperUtils;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,8 @@ import java.time.LocalDateTime;
 @Service
 public class GameService implements IGameService {
 
-    private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapperUtils modelMapperUtils;
     @Autowired
     private IGameRepository gameRepository;
     @Autowired
@@ -33,32 +34,36 @@ public class GameService implements IGameService {
     @Autowired
     private ICellService cellService;
     @Autowired
-    private IUserRepository userRepository;
+    private IUserService userService;
 
     /**
-     * Creates a new game for the current user with the current settings.-
+     * Creates a new game for the current userId with the current settings.-
      *
-     * @param user          the user to create the game for
+     * @param userId        the userId to create the game for
      * @param boardSettings the settings for the new board
      * @return the create board
      * @throws InvalidBoardSettingsException if the {@link BoardService} are not valid
      */
     @Override
-    public Game createGame(final User user, final BoardSettings boardSettings) throws InvalidBoardSettingsException {
+    public Game createGame(final int userId, final BoardSettings boardSettings) throws InvalidBoardSettingsException, UserNotFoundException {
+
+        final User user = userService.findById(userId);
+
         final Game game = Game.builder()
                 .user(user)
                 .board(Board.builder().settings(boardSettings).build())
                 .build();
-        final Board board = boardService.startBoard(game.getBoard(), boardSettings);
+        final Board board = boardService.startNewBoard(boardSettings);
 
         game.setBoard(board);
 
-        final com.deviget.minesweeper.model.entity.Game newGame = modelMapper.map(game,
+        final com.deviget.minesweeper.model.entity.Game newGame = modelMapperUtils.map(game,
                 com.deviget.minesweeper.model.entity.Game.class);
 
-        newGame.setUser(userRepository.findById(user.getId()).get());
+        newGame.setUser(modelMapperUtils.map(userService.findById(user.getId()),
+                com.deviget.minesweeper.model.entity.User.class));
 
-        return modelMapper.map(gameRepository.save(newGame), Game.class);
+        return modelMapperUtils.map(gameRepository.save(newGame), Game.class);
     }
 
     /**
@@ -75,21 +80,21 @@ public class GameService implements IGameService {
         if (gameFound.isOver()) {
             throw new InvalidGameStatusException(gameFound.getStatus());
         }
-        return modelMapper.map(gameFound, Game.class);
+        return modelMapperUtils.map(gameFound, Game.class);
     }
 
     /**
      * Flags a a Cell for the current game's board.-
      *
-     * @param game     the current game
+     * @param gameId   the current game
      * @param flagCell the cell to flag
      * @param flagType the type of flag to assign
      * @return the flagged cell
      */
     @Override
-    public Cell flagCell(final Game game, final Cell flagCell, final FlagTypeEnum flagType) throws CellNotFoundException,
-            ExistingCellException, CellFlaggedException {
-        return cellService.saveCell(CellUtils.flagCell(game.getBoard(), flagCell, flagType));
+    public Cell flagCell(final int gameId, final Cell flagCell, final FlagTypeEnum flagType) throws CellNotFoundException,
+            ExistingCellException, CellFlaggedException, InvalidGameStatusException, GameNotFoundException {
+        return cellService.saveCell(CellUtils.flagCell(findById(gameId).getBoard(), flagCell, flagType));
     }
 
     /**
@@ -108,12 +113,12 @@ public class GameService implements IGameService {
     }
 
     /**
-     * Ends the current game.-
+     * Ends the current game in a Failed state.-
      *
      * @param game the game to end
      */
     @Override
-    public void endGame(final Game game) {
+    public void endGameAsFailed(final Game game) {
         game.setEndTime(LocalDateTime.now());
         GameUtils.setElapsedTime(game);
 
@@ -134,8 +139,8 @@ public class GameService implements IGameService {
     @Override
     public Game saveGame(final Game game) {
         game.setEditTime(LocalDateTime.now());
-        return modelMapper.map(
-                gameRepository.save(modelMapper.map(game, com.deviget.minesweeper.model.entity.Game.class)),
+        return modelMapperUtils.map(
+                gameRepository.save(modelMapperUtils.map(game, com.deviget.minesweeper.model.entity.Game.class)),
                 Game.class);
     }
 }

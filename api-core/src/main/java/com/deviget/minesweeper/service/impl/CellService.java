@@ -4,8 +4,8 @@ import com.deviget.minesweeper.exception.ExistingCellException;
 import com.deviget.minesweeper.model.dto.Cell;
 import com.deviget.minesweeper.repository.ICellRepository;
 import com.deviget.minesweeper.service.ICellService;
+import com.deviget.minesweeper.util.ModelMapperUtils;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CellService implements ICellService {
 
-    private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapperUtils modelMapperUtils;
     @Autowired
     private ICellRepository cellRepository;
 
@@ -31,7 +32,7 @@ public class CellService implements ICellService {
     public Cell saveCell(final Cell cell) throws ExistingCellException {
 
         if (cellRepository.existsById(cell.getId())) {
-            return modelMapper.map(cellRepository.saveAndFlush(modelMapper.map(cell,
+            return modelMapperUtils.map(cellRepository.saveAndFlush(modelMapperUtils.map(cell,
                     com.deviget.minesweeper.model.entity.Cell.class)), Cell.class);
         } else {
             throw new ExistingCellException(cell.getId());

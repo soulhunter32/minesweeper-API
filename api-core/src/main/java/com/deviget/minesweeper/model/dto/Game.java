@@ -4,6 +4,10 @@ import com.deviget.minesweeper.model.enums.GameStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -29,6 +33,8 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 public class Game implements Serializable {
 
     private static final long serialVersionUID = 9123734699152341971L;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @ApiModelProperty(notes = "Create time of the game", hidden = true)
     private final LocalDateTime createTime = LocalDateTime.now();
     @ApiModelProperty(notes = "The score of the game. Each cell sums in the score")

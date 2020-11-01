@@ -9,13 +9,12 @@ import com.deviget.minesweeper.service.IBoardService;
 import com.deviget.minesweeper.util.BoardUtils;
 import com.deviget.minesweeper.util.CellUtils;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Service in charge of all board related functionalities.-
@@ -24,39 +23,21 @@ import java.util.function.Predicate;
 @Service
 public class BoardService implements IBoardService {
 
-    private final ModelMapper modelMapper = new ModelMapper();
     @Value("${general.settings.difficulty-level:0.35}")
     private double difficultylevel;
     @Autowired
     private IUserRepository userRepository;
     private Board currentBoard;
 
-    @Override
-    public int revealCellIUserService(final Cell cell) {
-        return 0;
-    }
-
-    @Override
-    public int findAdjacentData(final Cell cell) {
-        return 0;
-    }
-
-    @Override
-    public void flagCell(final Cell cell) {
-
-    }
-
     /**
      * Creates a new Board with the current settings and populates the cells with the amount of mines randomly
      * assigned.-
      *
-     * @param board
      * @param settings the settings to create the new board
      * @return the new created and ready-to-play board
      */
     @Override
-    public Board startBoard(final Board board, final BoardSettings settings) throws InvalidBoardSettingsException {
-
+    public Board startNewBoard(final BoardSettings settings) throws InvalidBoardSettingsException {
         validate(settings);
 
         currentBoard = Board.builder()
@@ -74,7 +55,7 @@ public class BoardService implements IBoardService {
      * Evaluates every cell in the current board and marks the ones that has adjacent mine cells'.-
      */
     private void setCellAdjacents() {
-        currentBoard.getCellList().stream().filter(Predicate.not(Cell::isMine))
+        currentBoard.getCellList().stream().filter(c -> !c.isMine())
                 .forEach(cell ->
                         cell.setAdjacentMines((int) BoardUtils.findBoundaryCells(currentBoard, cell).stream().filter(Cell::isMine).count()));
     }
@@ -97,13 +78,15 @@ public class BoardService implements IBoardService {
      */
     private void populateMines() {
         final List<Cell> cellList = currentBoard.getCellList();
-        int mineCount = 0;
+        final AtomicInteger mineCount = new AtomicInteger(0);
 
-        while (mineCount < currentBoard.getSettings().getTotalMines()) {
+        while (mineCount.get() < currentBoard.getSettings().getTotalMines()) {
             cellList.stream().filter(cell -> (cell.getXCoordinate() == CellUtils.getRandomCellPosition(currentBoard.getSettings().getWidth()))
                     && (cell.getYCoordinate() == CellUtils.getRandomCellPosition(currentBoard.getSettings().getHeight())) && !cell.isMine())
-                    .findAny().ifPresent(c -> c.setMine(true));
-            mineCount++;
+                    .findAny().ifPresent(c -> {
+                c.setMine(true);
+                mineCount.getAndIncrement();
+            });
         }
         currentBoard.setCellList(cellList);
     }

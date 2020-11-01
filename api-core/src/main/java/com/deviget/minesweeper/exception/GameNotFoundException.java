@@ -1,6 +1,6 @@
 package com.deviget.minesweeper.exception;
 
-public class GameNotFoundException extends RuntimeException {
+public class GameNotFoundException extends Exception {
 
     private static final long serialVersionUID = 5718024353725380360L;
 

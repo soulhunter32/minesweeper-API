@@ -6,7 +6,6 @@ import com.deviget.minesweeper.model.dto.Game;
 import com.deviget.minesweeper.model.enums.FlagTypeEnum;
 import com.deviget.minesweeper.model.enums.GameStatusEnum;
 import com.deviget.minesweeper.service.IGameService;
-import com.deviget.minesweeper.service.IUserService;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.*;
 import lombok.extern.log4j.Log4j2;
@@ -33,9 +32,6 @@ public class GameController {
     @Autowired
     private IGameService gameService;
 
-    @Autowired
-    private IUserService userService;
-
     /**
      * Flags a cell in the current game's board.-
      */
@@ -60,27 +56,22 @@ public class GameController {
 
         log.info("flagCell:: Entering Flag Cell for game {} and cell coordinates [{},{}] ...", gameId,
                 flagCell.getXCoordinate(), flagCell.getYCoordinate() + " and flag type " + flagType);
-        final Game game;
         try {
-            game = gameService.findById(gameId);
+            flagCell = gameService.flagCell(gameId, flagCell, flagType);
         } catch (final GameNotFoundException e) {
             log.error("flagCell:: Game {} was not found !", gameId, e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        } catch (final InvalidGameStatusException e) {
-            log.error("flagCell:: Game {} is in an finished state !", gameId, e);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
-        }
-
-        try {
-            flagCell = gameService.flagCell(game, flagCell, flagType);
-        } catch (final GameNotFoundException e) {
-            log.error("flagCell:: Cell {} was not found !", flagCell, e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (final ExistingCellException e) {
             log.error("flagCell:: Cell {} already exists !", flagCell, e);
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
         } catch (final CellFlaggedException e) {
-            log.error("flagCell:: Cell {} is already flagged and cannot be revealed !", flagCell, e);
+            log.error("flagCell:: Cell {} is already flaggemd and cannot be revealed !", flagCell, e);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+        } catch (final CellNotFoundException e) {
+            log.error("flagCell:: Cell {} was not found !", flagCell, e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        } catch (final InvalidGameStatusException e) {
+            log.error("flagCell:: Game {} is in an finished state !", gameId, e);
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
         }
 
@@ -122,16 +113,16 @@ public class GameController {
 
         try {
             revealCell = gameService.revealCell(game, revealCell);
-        } catch (final GameNotFoundException e) {
-            log.error("revealCell:: Cell {} was not found !", revealCell, e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (final ExistingCellException e) {
             log.error("revealCell:: Cell {} already exists !", revealCell, e);
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
         } catch (final GameOverException e) {
-            gameService.endGame(game);
+            gameService.endGameAsFailed(game);
             log.error("revealCell:: CELL {} HAD A MINE ! BOOM - GAME OVER !", revealCell, e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage(), e);
+        } catch (final CellNotFoundException e) {
+            log.error("flagCell:: Cell {} was not found !", revealCell, e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
 
         if (GameStatusEnum.COMPLETED.equals(game.getStatus())) {

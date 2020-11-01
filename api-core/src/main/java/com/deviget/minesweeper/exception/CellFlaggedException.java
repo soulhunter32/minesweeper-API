@@ -2,7 +2,7 @@ package com.deviget.minesweeper.exception;
 
 import com.deviget.minesweeper.model.dto.Cell;
 
-public class CellFlaggedException extends RuntimeException {
+public class CellFlaggedException extends Exception {
 
     private static final long serialVersionUID = -4708131317783130669L;
 

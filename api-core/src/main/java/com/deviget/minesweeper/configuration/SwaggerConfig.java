@@ -1,8 +1,10 @@
 package com.deviget.minesweeper.configuration;
 
 import com.google.common.base.Predicates;
+import org.hibernate.cfg.beanvalidation.BeanValidationIntegrator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -18,6 +20,7 @@ import java.util.Collections;
  */
 @Configuration
 @EnableSwagger2
+@Import(BeanValidationIntegrator.class)
 public class SwaggerConfig {
 
     @Bean

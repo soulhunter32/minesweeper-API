@@ -81,21 +81,16 @@ public class UserController {
                                            @ApiParam(value = "Board settings. Required", required = true, type = "BoardSettings")
                                            @NotNull @RequestBody final BoardSettings boardSettings) {
         log.info("createGame:: Entering Create new newGame for user {} ...", userId);
-        final User user;
-
-        try {
-            user = userService.findById(userId);
-        } catch (final UserNotFoundException e) {
-            log.error("createGame:: User {} was not found !", userId, e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
 
         final Game newGame;
         try {
-            newGame = gameService.createGame(user, boardSettings);
+            newGame = gameService.createGame(userId, boardSettings);
         } catch (final InvalidBoardSettingsException e) {
             log.error("createGame:: There is an error on game settings", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        } catch (final UserNotFoundException e) {
+            log.error("createGame:: User {} was not found !", userId, e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
 
         log.info("createGame:: New game created:  {} ...", newGame);
