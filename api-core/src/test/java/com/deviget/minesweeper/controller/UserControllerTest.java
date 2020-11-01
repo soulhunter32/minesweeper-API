@@ -83,7 +83,7 @@ public class UserControllerTest extends AbstractControllerTest {
         final BoardSettings boardSettings = BoardSettings.builder().build();
         when(gameServiceMock.createGame(userId, boardSettings)).thenThrow(new InvalidBoardSettingsException(Strings.EMPTY));
 
-        final MvcResult result = apiMock.perform(MockMvcRequestBuilders.post("/users/" + userId + "/game")
+        final MvcResult result = apiMock.perform(MockMvcRequestBuilders.post("/users/" + userId + "/games")
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(boardSettings))).andReturn();
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), result.getResponse().getStatus());
@@ -98,7 +98,7 @@ public class UserControllerTest extends AbstractControllerTest {
         final BoardSettings boardSettings = BoardSettings.builder().build();
         when(gameServiceMock.createGame(userId, boardSettings)).thenThrow(new UserNotFoundException(userId));
 
-        final MvcResult result = apiMock.perform(MockMvcRequestBuilders.post("/users/" + userId + "/game")
+        final MvcResult result = apiMock.perform(MockMvcRequestBuilders.post("/users/" + userId + "/games")
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(boardSettings))).andReturn();
 
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
@@ -114,7 +114,7 @@ public class UserControllerTest extends AbstractControllerTest {
         final Game createdGame = Game.builder().id(userId).build();
         when(gameServiceMock.createGame(userId, boardSettings)).thenReturn(createdGame);
 
-        final MvcResult result = apiMock.perform(MockMvcRequestBuilders.post("/users/" + userId + "/game")
+        final MvcResult result = apiMock.perform(MockMvcRequestBuilders.post("/users/" + userId + "/games")
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(boardSettings))).andReturn();
 
         final Game responseGame = mapFromJson(result.getResponse().getContentAsString(), Game.class);

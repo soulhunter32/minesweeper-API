@@ -25,7 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/users")
 @Log4j2
-@Api(value = "User API for Minesweeper Application", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(value = "User API endpoint for Minesweeper Application", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     @Autowired
@@ -74,7 +74,7 @@ public class UserController {
             @ApiResponse(code = 204, message = "User not found"),
             @ApiResponse(code = 500, message = "Game settings are not correct"),
     })
-    @PostMapping(value = "/{userId}/game", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces =
+    @PostMapping(value = "/{userId}/games", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces =
             {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Game> createGame(@ApiParam(value = "User ID. Required", required = true, type = "int")
                                            @NotNull @PathVariable("userId") final Integer userId,

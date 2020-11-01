@@ -24,7 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder
 @Component
 object MinesweeperClient {
 
-	private val FLAG_TYPE_QUERY_PARAM: String = "flagType"
+	private const val FLAG_TYPE_QUERY_PARAM: String = "flagType"
 
 	private val apiSchema: String? = "http"
 	private val apiContext: String? = "minesweeper"

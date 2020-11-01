@@ -5,7 +5,7 @@ package com.deviget.minesweeper.client.enums
  */
 enum class UriEnum(val uri: String) {
 	USER_CREATION("/users"),
-	GAME_CREATION(USER_CREATION.uri + "/{userId}/game"),
+	GAME_CREATION(USER_CREATION.uri + "/{userId}/games"),
 	REVEAL_CELL("/games/{gameId}/reveal-cell"),
 	FLAG_CELL("/games/{gameId}/flag-cell")
 }

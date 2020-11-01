@@ -26,7 +26,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/games")
 @Log4j2
-@Api(value = "Game API for Minesweeper Application", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(value = "Game API endpoint for Minesweeper Application", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class GameController {
 
     @Autowired

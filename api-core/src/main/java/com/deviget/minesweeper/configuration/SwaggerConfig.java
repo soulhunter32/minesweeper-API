@@ -41,13 +41,12 @@ public class SwaggerConfig {
     private ApiInfo getApiInfo() {
         return new ApiInfo(
                 "Minesweeper API",
-                "Spring Boot 2 REST API - Java 8 - Lombok - H2 - JUnit 4 + Mockito + PowerMock + Jacoco - SpringFox + Swagger 2",
+                "<b>Spring Boot 2 REST API</b> </br>- Java 8 </br>- Lombok </br>- Spring Security + JWT </br>- H2 </br>- JUnit 4 + Mockito + PowerMock + Jacoco </br>- SpringFox + Swagger 2",
                 "V1",
                 "urn:tos",
                 new Contact("Sebastián Kapcitzky", "https://www.linkedin.com/in/kapsebastian", "kap.sebastian@gmail.com"),
                 "CC BY-SA 3.0",
                 "https://creativecommons.org/licenses/by-sa/3.0/",
-                Collections.emptyList()
-        );
+                Collections.emptyList());
     }
 }
