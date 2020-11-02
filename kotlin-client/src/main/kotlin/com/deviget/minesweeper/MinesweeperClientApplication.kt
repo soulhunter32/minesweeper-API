@@ -5,13 +5,13 @@ import com.deviget.minesweeper.model.dto.BoardSettings
 import com.deviget.minesweeper.model.dto.Cell
 import com.deviget.minesweeper.model.dto.User
 import com.deviget.minesweeper.model.enums.FlagTypeEnum
-import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 /**
  * Minesweeper API Kotlin Client.-
  */
-@SpringBootApplication
+//@SpringBootApplication
+//TODO: Activate Spring annotation for tests purposes
 class MinesweeperClientApplication
 
 fun main(args: Array<String>) {

@@ -3,6 +3,8 @@ package com.deviget.minesweeper.client
 import com.deviget.minesweeper.auth.model.JwtRequest
 import com.deviget.minesweeper.auth.model.JwtResponse
 import com.deviget.minesweeper.client.enums.UriEnum
+import com.deviget.minesweeper.client.exception.MinesweeperClientException
+import com.deviget.minesweeper.client.util.ClientUtils
 import com.deviget.minesweeper.model.dto.BoardSettings
 import com.deviget.minesweeper.model.dto.Cell
 import com.deviget.minesweeper.model.dto.Game
@@ -14,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.http.*
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
+
 
 /**
  * Minesweeper API Kotlin Client.-
@@ -92,14 +96,15 @@ object MinesweeperClient {
 		val uri = UriComponentsBuilder.newInstance().scheme(apiSchema).host(HOST).port(apiPort)
 			.path(apiContext + UriEnum.USER_CREATION.uri).build().toUri()
 		val httpEntity = HttpEntity(user, headers)
-		val responseEntity = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, User::class.java)
 
-		if (HttpStatus.CREATED == responseEntity.statusCode) {
-			return responseEntity.body
-		} else {
-
+		try {
+			return restTemplate.exchange(uri, HttpMethod.POST, httpEntity, User::class.java).body
+		} catch (e: HttpServerErrorException) {
+			logger.error("revealCell:: There was an error while authenticating: {}", e.message)
+			throw MinesweeperClientException(
+				ClientUtils.extractErrorMessage(e)
+			)
 		}
-		return null
 	}
 
 	/**
@@ -120,7 +125,14 @@ object MinesweeperClient {
 			.buildAndExpand(userId)
 			.toUri()
 		val httpEntity = HttpEntity(settings, headers)
-		return restTemplate.exchange(uri, HttpMethod.POST, httpEntity, Game::class.java).body
+		try {
+			return restTemplate.exchange(uri, HttpMethod.POST, httpEntity, Game::class.java).body
+		} catch (e: HttpServerErrorException) {
+			logger.error("revealCell:: There was an error while authenticating: {}", e.message)
+			throw MinesweeperClientException(
+				ClientUtils.extractErrorMessage(e)
+			)
+		}
 	}
 
 
@@ -130,7 +142,8 @@ object MinesweeperClient {
 	 * @param gameId the game id of the reveal cell's game
 	 * @param cell the cell to reveal
 	 */
-	fun revealCell(gameId: Int?, cell: Cell?): Game? {
+	@Throws(MinesweeperClientException::class)
+	fun revealCell(gameId: Int?, cell: Cell?): Cell? {
 		logger.info("revealCell :: Revealing sell for game {}: {}", gameId, cell)
 
 		val headers: HttpHeaders = HttpHeaders()
@@ -142,7 +155,14 @@ object MinesweeperClient {
 			.buildAndExpand(gameId)
 			.toUri()
 		val httpEntity = HttpEntity(cell, headers)
-		return restTemplate.exchange(uri, HttpMethod.PUT, httpEntity, Game::class.java).body
+		try {
+			return restTemplate.exchange(uri, HttpMethod.PUT, httpEntity, Cell::class.java).body
+		} catch (e: HttpServerErrorException) {
+			logger.error("revealCell:: There was an error while revealing cell {}", cell, e.message)
+			throw MinesweeperClientException(
+				ClientUtils.extractErrorMessage(e)
+			)
+		}
 	}
 
 	/**
@@ -164,6 +184,13 @@ object MinesweeperClient {
 			.query("$FLAG_TYPE_QUERY_PARAM={$FLAG_TYPE_QUERY_PARAM}").buildAndExpand(gameId, flagType)
 			.toUri()
 		val httpEntity = HttpEntity(cell, headers)
-		return restTemplate.exchange(uri, HttpMethod.PUT, httpEntity, Game::class.java).body
+		try {
+			return restTemplate.exchange(uri, HttpMethod.PUT, httpEntity, Game::class.java).body
+		} catch (e: HttpServerErrorException) {
+			logger.error("revealCell:: There was an error while authenticating: {}", e.message)
+			throw MinesweeperClientException(
+				ClientUtils.extractErrorMessage(e)
+			)
+		}
 	}
 }
