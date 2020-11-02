@@ -3,7 +3,7 @@
 ---
 
 Minesweeper API is a Java REST API that emulates the classic and well-known [Minesweeper game](https://en.wikipedia.org/wiki/Minesweeper_(video_game)), developed with a wide range of technologies:
-- Java 9
+- Java 8
 - Spring Boot 2 (Spring REST + Spring Security + JPA + Lombok)
 - JWT
 - Swagger 2 + Springfox UI

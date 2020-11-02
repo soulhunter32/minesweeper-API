@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -24,6 +25,7 @@ import static com.deviget.minesweeper.util.ResponseErrorBuilder.ResponseEntityBu
 @ControllerAdvice
 @RestController
 @Log4j2
+@ApiIgnore(value = "true")
 public class ApiResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**

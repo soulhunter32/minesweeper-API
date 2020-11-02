@@ -3,9 +3,7 @@ package com.deviget.minesweeper.auth.controller;
 import com.deviget.minesweeper.auth.model.JwtRequest;
 import com.deviget.minesweeper.auth.model.JwtResponse;
 import com.deviget.minesweeper.auth.util.JwtTokenUtil;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,12 +12,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Objects;
 
 @RestController
 @CrossOrigin
-@Api(value = "Authentication API endpoint for Minesweeper Application", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@ApiIgnore(value = "true")
 public class JwtAuthenticationController {
 
     @Autowired
