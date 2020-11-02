@@ -11,7 +11,7 @@ Minesweeper API is a Java REST API that emulates the classic and well-known [Min
 - Maven
 - Kotlin Client - Kotlin v1.3.72
 - Deployed on AWS Beanstalk
-- [Docsify](https://docsify.js.org/#/) documentation hosted on AWS Amplify
+- [Docsify](https://docsify.js.org/#/) documentation hosted on Github Pages
 
 ## Test environment
 The API has been deployed on AWS Beanstalk and can be accessed in the following URL:
@@ -21,7 +21,7 @@ The API has been deployed on AWS Beanstalk and can be accessed in the following 
 :link: https://github.com/soulhunter32/minesweeper-API
 
 ## Application Docsify
-:link: [Readme Documentation](https://master.dqfof35q5pvab.amplifyapp.com)
+:link: [Readme Documentation](https://soulhunter32.github.io/minesweeper-API)
 
 ## Project Structure
 The application consist of a main Java API core and a Kotlin client to consume it, split into a multi-module Maven project. 
@@ -59,7 +59,7 @@ The flag type can be `RED_FLAG` or `QUESTION_MARK`
  
 ## Swagger API Documentation
 :link: [Online API Doc](http://minesweeperapi-env-1.eba-yzizmngx.us-east-2.elasticbeanstalk.com/minesweeper/swagger-ui) <br>
-Locally: http://localhost:5000/minesweeper/swagger-ui¨
+Locally: http://localhost:5000/minesweeper/swagger-ui
 
 ## Game Instructions
 * Before start, the user needs to log into the application with `username` and `password`
