@@ -15,6 +15,12 @@ Minesweeper API is a Java REST API that emulates the classic and well-known [Min
 The API has been deployed on AWS Beanstalk and can be accessed in the following URL:
 http://minesweeperapi-env-1.eba-yzizmngx.us-east-2.elasticbeanstalk.com
 
+## GitHub Repository
+https://github.com/soulhunter32/minesweeper-API
+
+## Docsify
+[Readme Documentation](https://master.dqfof35q5pvab.amplifyapp.com)
+
 ## Project Structure
 The application consist of a main Java API core and a Kotlin client to consume it, split into a multi-module Maven project. 
 * API Core Module: `api-core`
@@ -31,7 +37,7 @@ The application consist of a main Java API core and a Kotlin client to consume i
 * Ability to flag a cell based on X and Y coordinates and a type.
 The flag type can be `RED_FLAG` or `QUESTION_MARK`
 * Time tracking, each game has a start, end and elapsed time set once the game has finished (win/lost game)
-##### The game difficulty level can be also configured, but it's not available for user access
+* Game difficulty level can be also configured, but it's not available for user access
 
 ## Installation
 * Clone the repository:
@@ -40,13 +46,13 @@ The flag type can be `RED_FLAG` or `QUESTION_MARK`
     * `cd minesweeper-API`
     * `mvn clean install`
 
-##Run API server
+## Run API server
 * The API project contains an embedded Tomcat server. To run it, execute the following commands:
    * `cd /api-core`
    * `mvn spring-boot:run`
 * The API entry point will be accessible on http://localhost:5000/minesweeper
  
-##API Documentation
+## API Documentation
 The API documentation can be accessed on http://localhost:5000/minesweeper/swagger-ui.html¨
 
 ## Game Instructions
@@ -55,39 +61,39 @@ The API documentation can be accessed on http://localhost:5000/minesweeper/swagg
 * From now on, the user can send cell reveal/flag coordinates to a game Ability to reveal a cell based on X and Y coordinates
 * Ability to flag a cell based on X and Y coordinates and a type.
 The flag type can be `RED_FLAG` or `QUESTION_MARK`
-##### The game difficulty level can be also configured, but it's not available for user access
+Game difficulty level can be also configured, but it's not available for user access
 
 ## Endpoints
-###New User
+### New User
 Creates a new user for the  `username` supplied in the request.
 
     POST /minesweeper/users
 
-######Request
-User
+#### Request
+- User
 ```json
 {"username": "user01"}
 ```
-######Response
-User
+#### Response
+- User
 ```json
 {"id":"1", "username": "user01"}
 ```
 
-###New Game
+### New Game
 Creates a game with the board settings provided, for the user  `userId` supplied in the path. 
 It populates the board with the settings provided, creating a X*Y matrix using the width and height from the settings.
 It also randomly populates the mines and completes the adjacent information for each cell.
 
     POST /minesweeper/users/{userId}
 
-######Request
-Board Settings
+#### Request
+- Board Settings
 ```json
 {"width": 10, "height": 10, "totalMines": 35}
 ```
-######Response
-Game
+#### Response
+- Game
 ```json
 {
 	"createTime": "2020-11-01T15:02:15.336712",
@@ -129,18 +135,18 @@ Game
 }
 ```
 
-###Flag Cell
+### Flag Cell
 Flags a cell with the request coordinates supplied and the `gameId` and `flagType` desired. The flag type can be RED_FLAG or QUESTION_MARKS.
 
     PUT /minesweeper/games/{gameId}/flag-cell?flagType={flagType}
 
-######Request
-Cell
+#### Request
+- Cell
 ```json
 {"xcoordinate": 1,"ycoordinate": 1}
 ```
-######Response
-Cell
+#### Response
+- Cell
 ```json
 {
 	"id": 1,
@@ -154,18 +160,18 @@ Cell
 }
 ```
 
-###Reveal Cell
+### Reveal Cell
 Reveals a cell with the request coordinates and `gameId`supplied.
 
     PUT /minesweeper/games/{gameId}/reveal-cell
 
-######Request
-Cell
+#### Request
+- Cell
 ```json
 {"xcoordinate": 1,"ycoordinate": 1}
 ```
-######Response
-Cell
+#### Response
+- Cell
 ```json
 {
 	"id": 1,
