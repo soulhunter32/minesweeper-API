@@ -58,8 +58,8 @@ The flag type can be `RED_FLAG` or `QUESTION_MARK`
 * The API entry point will be accessible on http://localhost:5000/minesweeper
  
 ## Swagger API Documentation
-:link: [Online API Doc](http://minesweeperapi-env-1.eba-yzizmngx.us-east-2.elasticbeanstalk.com/minesweeper/swagger-ui.html) <br>
-Locally: http://localhost:5000/minesweeper/swagger-ui.html¨
+:link: [Online API Doc](http://minesweeperapi-env-1.eba-yzizmngx.us-east-2.elasticbeanstalk.com/minesweeper/swagger-ui) <br>
+Locally: http://localhost:5000/minesweeper/swagger-ui¨
 
 ## Game Instructions
 * Before start, the user needs to log into the application with `username` and `password`
