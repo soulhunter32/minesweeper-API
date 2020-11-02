@@ -4,6 +4,7 @@ import com.deviget.minesweeper.model.dto.Game;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Game Utility helper.-
@@ -18,7 +19,7 @@ public final class GameUtils {
      */
     public static void setElapsedTime(final Game game) {
         final Duration elapsedTime = Duration.between(game.getCreateTime(), game.getEndTime());
-        game.setElapsedTime(String.valueOf(elapsedTime.toMinutesPart()).concat(" minutes and ")
-                .concat(String.valueOf(elapsedTime.toSecondsPart())));
+        game.setElapsedTime(String.valueOf(TimeUnit.MILLISECONDS.toMinutes(elapsedTime.toMillis())).concat(" minutes and ")
+                .concat(String.valueOf(TimeUnit.MILLISECONDS.toSeconds(elapsedTime.toMillis()))));
     }
 }
