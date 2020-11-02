@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel(value = "Error Detail", description = "The default error detail response")
@@ -32,4 +30,11 @@ public class MinesweeperApiErrorDetail implements Serializable {
     private HttpStatus status;
     private String message;
     private List<String> errors;
+
+    public MinesweeperApiErrorDetail(final LocalDateTime timestamp, final HttpStatus status, final String message, final List<String> errors) {
+        this.timestamp = timestamp;
+        this.status = status;
+        this.message = message;
+        this.errors = errors;
+    }
 }

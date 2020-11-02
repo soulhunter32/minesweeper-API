@@ -1,21 +1,21 @@
-# Minesweeper API
+# :bomb: Minesweeper API
 
 ---
 
-!> Minesweeper API is a Java REST API that emulates the classic and well-known [Minesweeper game](https://en.wikipedia.org/wiki/Minesweeper_(video_game)), developed with a wide range of technologies:
-<br> - Java 9
-<br> - Spring Boot 2 (Spring REST + Spring Security + JPA + Lombok)
-<br> - JWT
-<br> - Swagger 2 + Springfox UI
-<br> - JUnit 4 + Mockito 2 + PowerMock
-<br> - Maven
-<br> - Kotlin Client - Kotlin v1.3.72
-<br> - Deployed on AWS Beanstalk
-<br> - [Docsify](https://docsify.js.org/#/) documentation hosted on AWS Amplify
+Minesweeper API is a Java REST API that emulates the classic and well-known [Minesweeper game](https://en.wikipedia.org/wiki/Minesweeper_(video_game)), developed with a wide range of technologies:
+- Java 9
+- Spring Boot 2 (Spring REST + Spring Security + JPA + Lombok)
+- JWT
+- Swagger 2 + Springfox UI
+- JUnit 4 + Mockito 2 + PowerMock
+- Maven
+- Kotlin Client - Kotlin v1.3.72
+- Deployed on AWS Beanstalk
+- [Docsify](https://docsify.js.org/#/) documentation hosted on AWS Amplify
 
 ## Test environment
 The API has been deployed on AWS Beanstalk and can be accessed in the following URL:
-:link: http://minesweeperapi-env-1.eba-yzizmngx.us-east-2.elasticbeanstalk.com
+:link: http://minesweeperapi-env-1.eba-yzizmngx.us-east-2.elasticbeanstalk.com/minesweeper
 
 ## GitHub Repository
 :link: https://github.com/soulhunter32/minesweeper-API
@@ -27,6 +27,8 @@ The API has been deployed on AWS Beanstalk and can be accessed in the following 
 The application consist of a main Java API core and a Kotlin client to consume it, split into a multi-module Maven project. 
 * API Core Module: `api-core`
 * Kotlin Client Module: `kotlin-client`
+> Kotlin client is mean to be included in a project to be used. Currently, it has a **_disabled_** SpringBoot client application
+> in order to make local tests
 
 ## Features
 * Ability to log into the application with `username` and `password`. The JWT token has a duration of 15 minutes.

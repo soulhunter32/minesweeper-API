@@ -24,7 +24,7 @@ public final class CellUtils {
      *
      * @param centerCell the main center cell
      * @param targetCell the target cell to evaluate
-     * @return tru if the targetCell us right-boundary to the centerCell
+     * @return true if the targetCell us right-boundary to the centerCell
      */
     public static boolean isRightBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
@@ -36,7 +36,7 @@ public final class CellUtils {
      *
      * @param centerCell the main center cell
      * @param targetCell the target cell to evaluate
-     * @return tru if the targetCell us right-upper-boundary to the centerCell
+     * @return true if the targetCell us right-upper-boundary to the centerCell
      */
     public static boolean isRightUpperBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
@@ -48,7 +48,7 @@ public final class CellUtils {
      *
      * @param centerCell the main center cell
      * @param targetCell the target cell to evaluate
-     * @return tru if the targetCell us right-lower-boundary to the centerCell
+     * @return true if the targetCell us right-lower-boundary to the centerCell
      */
     public static boolean isRightLowerBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() + 1
@@ -60,7 +60,7 @@ public final class CellUtils {
      *
      * @param centerCell the main center cell
      * @param targetCell the target cell to evaluate
-     * @return tru if the targetCell us upper-boundary to the centerCell
+     * @return true if the targetCell us upper-boundary to the centerCell
      */
     public static boolean isUpperBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate()
@@ -72,7 +72,7 @@ public final class CellUtils {
      *
      * @param centerCell the main center cell
      * @param targetCell the target cell to evaluate
-     * @return tru if the targetCell us lower-boundary to the centerCell
+     * @return true if the targetCell us lower-boundary to the centerCell
      */
     public static boolean isLowerBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate()
@@ -85,7 +85,7 @@ public final class CellUtils {
      *
      * @param centerCell the main center cell
      * @param targetCell the target cell to evaluate
-     * @return tru if the targetCell us left-boundary to the centerCell
+     * @return true if the targetCell us left-boundary to the centerCell
      */
     public static boolean isLeftBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
@@ -97,7 +97,7 @@ public final class CellUtils {
      *
      * @param centerCell the main center cell
      * @param targetCell the target cell to evaluate
-     * @return tru if the targetCell us left-upper-boundary to the centerCell
+     * @return true if the targetCell us left-upper-boundary to the centerCell
      */
     public static boolean isLeftUpperBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1
@@ -109,7 +109,7 @@ public final class CellUtils {
      *
      * @param centerCell the main center cell
      * @param targetCell the target cell to evaluate
-     * @return tru if the targetCell us left-lower-boundary to the centerCell
+     * @return true if the targetCell us left-lower-boundary to the centerCell
      */
     public static boolean isLeftLowerBoundary(final Cell centerCell, final Cell targetCell) {
         return targetCell.getXCoordinate() == centerCell.getXCoordinate() - 1

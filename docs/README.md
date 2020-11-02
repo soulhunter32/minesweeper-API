@@ -27,6 +27,8 @@ The API has been deployed on AWS Beanstalk and can be accessed in the following 
 The application consist of a main Java API core and a Kotlin client to consume it, split into a multi-module Maven project. 
 * API Core Module: `api-core`
 * Kotlin Client Module: `kotlin-client`
+> Kotlin client is mean to be included in a project to be used. Currently, it has a **_disabled_** SpringBoot client application
+> in order to make local tests
 
 ## Features
 * Ability to log into the application with `username` and `password`. The JWT token has a duration of 15 minutes.

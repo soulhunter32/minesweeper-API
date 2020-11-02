@@ -64,7 +64,7 @@ public class GameController {
             log.error("flagCell:: Cell {} already exists !", flagCell, e);
             throw e;
         } catch (final CellFlaggedException e) {
-            log.error("flagCell:: Cell {} is already flaggemd and cannot be revealed !", flagCell, e);
+            log.error("flagCell:: Cell {} is already flagged and cannot be revealed !", flagCell, e);
             throw e;
         } catch (final CellNotFoundException e) {
             log.error("flagCell:: Cell {} was not found !", flagCell, e);
