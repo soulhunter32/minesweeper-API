@@ -15,7 +15,7 @@
 
 ## Test environment
 The API has been deployed on AWS Beanstalk and can be accessed in the following URL:
-:link: http://minesweeperapi-env-1.eba-yzizmngx.us-east-2.elasticbeanstalk.com
+:link: http://minesweeperapi-env-1.eba-yzizmngx.us-east-2.elasticbeanstalk.com/minesweeper
 
 ## GitHub Repository
 :link: https://github.com/soulhunter32/minesweeper-API
