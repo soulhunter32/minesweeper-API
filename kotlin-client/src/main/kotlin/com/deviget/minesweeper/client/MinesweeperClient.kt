@@ -1,5 +1,7 @@
 package com.deviget.minesweeper.client
 
+import com.deviget.minesweeper.auth.model.JwtRequest
+import com.deviget.minesweeper.auth.model.JwtResponse
 import com.deviget.minesweeper.client.enums.UriEnum
 import com.deviget.minesweeper.model.dto.BoardSettings
 import com.deviget.minesweeper.model.dto.Cell
@@ -10,10 +12,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.client.RestTemplateBuilder
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.MediaType
+import org.springframework.http.*
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
@@ -24,11 +23,12 @@ import org.springframework.web.util.UriComponentsBuilder
 @Component
 object MinesweeperClient {
 
+	private var jwtToken: String = ""
 	private const val FLAG_TYPE_QUERY_PARAM: String = "flagType"
 
 	private val apiSchema: String? = "http"
 	private val apiContext: String? = "minesweeper"
-	private val apiPort: String? = "8080"
+	private val apiPort: String? = "5000"
 
 	private val logger: Logger = LoggerFactory.getLogger(MinesweeperClient.javaClass)
 
@@ -59,6 +59,24 @@ object MinesweeperClient {
 		return this
 	}
 
+	fun authorize(user: String, password: String): Boolean {
+		logger.info("Authorizing with user {}", user)
+		logger.debug("Authorizing with user {} and password {}", user, password)
+
+		val headers: HttpHeaders = HttpHeaders()
+		headers.contentType = MediaType.APPLICATION_JSON
+
+		val uri = UriComponentsBuilder.newInstance().scheme(apiSchema).host(HOST).port(apiPort)
+			.path(apiContext + UriEnum.AUTHENTICATE.uri).build().toUri()
+		val httpEntity = HttpEntity(JwtRequest.builder().username(user).password(password).build(), headers)
+		val exchangeResponse = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, JwtResponse::class.java)
+
+		if (HttpStatus.OK == exchangeResponse.statusCode) {
+			this.jwtToken = exchangeResponse.body?.jwttoken.toString()
+		}
+		return false
+	}
+
 	/**
 	 * Creates a new user.-
 	 *
@@ -69,11 +87,19 @@ object MinesweeperClient {
 
 		val headers: HttpHeaders = HttpHeaders()
 		headers.contentType = MediaType.APPLICATION_JSON
+		headers.setBearerAuth(jwtToken)
 
 		val uri = UriComponentsBuilder.newInstance().scheme(apiSchema).host(HOST).port(apiPort)
 			.path(apiContext + UriEnum.USER_CREATION.uri).build().toUri()
 		val httpEntity = HttpEntity(user, headers)
-		return restTemplate.exchange(uri, HttpMethod.POST, httpEntity, User::class.java).body
+		val responseEntity = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, User::class.java)
+
+		if (HttpStatus.CREATED == responseEntity.statusCode) {
+			return responseEntity.body
+		} else {
+
+		}
+		return null
 	}
 
 	/**
@@ -87,6 +113,7 @@ object MinesweeperClient {
 
 		val headers: HttpHeaders = HttpHeaders()
 		headers.contentType = MediaType.APPLICATION_JSON
+		headers.setBearerAuth(jwtToken)
 
 		val uri = UriComponentsBuilder.newInstance().scheme(apiSchema).host(HOST).port(apiPort)
 			.path(apiContext + UriEnum.GAME_CREATION.uri)
@@ -108,6 +135,7 @@ object MinesweeperClient {
 
 		val headers: HttpHeaders = HttpHeaders()
 		headers.contentType = MediaType.APPLICATION_JSON
+		headers.setBearerAuth(jwtToken)
 
 		val uri = UriComponentsBuilder.newInstance().scheme(apiSchema).host(HOST).port(apiPort)
 			.path(apiContext + UriEnum.REVEAL_CELL.uri)
@@ -129,6 +157,7 @@ object MinesweeperClient {
 
 		val headers: HttpHeaders = HttpHeaders()
 		headers.contentType = MediaType.APPLICATION_JSON
+		headers.setBearerAuth(jwtToken)
 
 		val uri = UriComponentsBuilder.newInstance().scheme(apiSchema).host(HOST).port(apiPort)
 			.path(apiContext + UriEnum.FLAG_CELL.uri)

@@ -11,13 +11,23 @@ spring:
     hibernate:
       dialect: org.hibernate.dialect.H2Dialect
       ddl-auto: create-drop
-    # Enabling H2 Console
   h2:
     console:
       enabled: true
       path: /h2
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
 
+auth:
+  jwt:
+    secret: "minesweeper-api-core-user"
+    # BCrypted on -> https://www.javainuse.com/onlineBcrypt
+    secret-pass: "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6"
+    #Expiration in seconds
+    token-expiration: 900
 
 general:
   settings:
-    difficulty-level=0.35:
+    difficulty-level: 0.35

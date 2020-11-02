@@ -8,13 +8,11 @@ import com.deviget.minesweeper.model.enums.GameStatusEnum;
 import com.deviget.minesweeper.service.impl.GameService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -24,9 +22,6 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
 @WebMvcTest(GameController.class)
 public class GameControllerTest extends AbstractControllerTest {
-
-    @Autowired
-    protected MockMvc apiMock;
 
     @MockBean
     protected GameService gameServiceMock;
@@ -42,8 +37,8 @@ public class GameControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToFlag))).andReturn();
 
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof GameNotFoundException);
-        assertEquals("The game " + gameId + " was not found", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(GameNotFoundException.class.getCanonicalName()));
+        assertEquals("The game " + gameId + " was not found", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -58,8 +53,8 @@ public class GameControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToFlag))).andReturn();
 
         assertEquals(HttpStatus.CONFLICT.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof ExistingCellException);
-        assertEquals("The cell " + cellId + " already exists", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(ExistingCellException.class.getCanonicalName()));
+        assertEquals("The cell " + cellId + " already exists", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -73,8 +68,8 @@ public class GameControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToFlag))).andReturn();
 
         assertEquals(HttpStatus.CONFLICT.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof CellFlaggedException);
-        assertEquals("The cell " + cellToFlag + " cannot be reveal, it's already flagged", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(CellFlaggedException.class.getCanonicalName()));
+        assertEquals("The cell " + cellToFlag + " cannot be reveal, it's already flagged", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -88,8 +83,8 @@ public class GameControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToFlag))).andReturn();
 
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof CellNotFoundException);
-        assertEquals("The cell " + cellToFlag + " was not found", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(CellNotFoundException.class.getCanonicalName()));
+        assertEquals("The cell " + cellToFlag + " was not found", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -103,9 +98,9 @@ public class GameControllerTest extends AbstractControllerTest {
         final MvcResult result = apiMock.perform(MockMvcRequestBuilders.put("/games/" + gameId + "/flag-cell?flagType=" + FlagTypeEnum.RED_FLAG)
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToFlag))).andReturn();
 
-        assertEquals(HttpStatus.CONFLICT.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof InvalidGameStatusException);
-        assertEquals("The game has finished [" + gameStatus + "], please create a new one", result.getResolvedException().getCause().getMessage());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), result.getResponse().getStatus());
+        assertTrue(result.getResolvedException().getClass().getName().equals(InvalidGameStatusException.class.getCanonicalName()));
+        assertEquals("The game has finished [" + gameStatus + "], please create a new one", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -142,8 +137,8 @@ public class GameControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToReveal))).andReturn();
 
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof GameNotFoundException);
-        assertEquals("The game " + gameId + " was not found", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(GameNotFoundException.class.getCanonicalName()));
+        assertEquals("The game " + gameId + " was not found", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -156,9 +151,9 @@ public class GameControllerTest extends AbstractControllerTest {
         final MvcResult result = apiMock.perform(MockMvcRequestBuilders.put("/games/" + gameId + "/reveal-cell")
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToReveal))).andReturn();
 
-        assertEquals(HttpStatus.CONFLICT.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof InvalidGameStatusException);
-        assertEquals("The game has finished [" + GameStatusEnum.FAILED + "], please create a new one", result.getResolvedException().getCause().getMessage());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), result.getResponse().getStatus());
+        assertTrue(result.getResolvedException().getClass().getName().equals(InvalidGameStatusException.class.getCanonicalName()));
+        assertEquals("The game has finished [" + GameStatusEnum.FAILED + "], please create a new one", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -175,8 +170,8 @@ public class GameControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToReveal))).andReturn();
 
         assertEquals(HttpStatus.CONFLICT.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof ExistingCellException);
-        assertEquals("The cell " + cellId + " already exists", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(ExistingCellException.class.getCanonicalName()));
+        assertEquals("The cell " + cellId + " already exists", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -193,8 +188,8 @@ public class GameControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToReveal))).andReturn();
 
         assertEquals(HttpStatus.NO_CONTENT.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof GameOverException);
-        assertEquals("The cell had a mine ! Game Over !", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(GameOverException.class.getCanonicalName()));
+        assertEquals("The cell had a mine ! Game Over !", result.getResolvedException().getMessage());
     }
 
     @Test
@@ -210,8 +205,8 @@ public class GameControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(cellToReveal))).andReturn();
 
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof CellNotFoundException);
-        assertEquals("The cell " + cellToReveal + " was not found", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(CellNotFoundException.class.getCanonicalName()));
+        assertEquals("The cell " + cellToReveal + " was not found", result.getResolvedException().getMessage());
     }
 
     @Test

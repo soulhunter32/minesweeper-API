@@ -1,6 +1,8 @@
 package com.deviget.minesweeper.exception;
 
-public class InvalidBoardSettingsException extends Exception {
+import com.deviget.minesweeper.exception.generic.MinesweeperServerErrorException;
+
+public class InvalidBoardSettingsException extends MinesweeperServerErrorException {
 
     private static final long serialVersionUID = 4742192259555414034L;
 

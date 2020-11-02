@@ -1,6 +1,8 @@
 package com.deviget.minesweeper.exception;
 
-public class UserNotFoundException extends Exception {
+import com.deviget.minesweeper.exception.generic.MinesweeperNotFoundException;
+
+public class UserNotFoundException extends MinesweeperNotFoundException {
 
     private static final long serialVersionUID = 4396573623121165297L;
 

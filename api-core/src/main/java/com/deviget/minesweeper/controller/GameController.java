@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
@@ -51,7 +50,7 @@ public class GameController {
                                          @ApiParam(value = "FlagType. Required", allowableValues = "FLAG_TYPE ,QUESTION_MARK", required = true, type = "FlagTypeEnum")
                                          @NotNull @PathParam("flagType") final FlagTypeEnum flagType,
                                          @ApiParam(value = "The Cell with the coordinates to flag the cell. Required", required = true, type = "Cell")
-                                         @NotNull @RequestBody Cell flagCell) {
+                                         @NotNull @RequestBody Cell flagCell) throws InvalidGameStatusException, CellNotFoundException, CellFlaggedException, ExistingCellException, GameNotFoundException {
         Objects.requireNonNull(flagType, "A flag type must be specified");
 
         log.info("flagCell:: Entering Flag Cell for game {} and cell coordinates [{},{}] ...", gameId,
@@ -60,19 +59,19 @@ public class GameController {
             flagCell = gameService.flagCell(gameId, flagCell, flagType);
         } catch (final GameNotFoundException e) {
             log.error("flagCell:: Game {} was not found !", gameId, e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            throw e;
         } catch (final ExistingCellException e) {
             log.error("flagCell:: Cell {} already exists !", flagCell, e);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+            throw e;
         } catch (final CellFlaggedException e) {
             log.error("flagCell:: Cell {} is already flaggemd and cannot be revealed !", flagCell, e);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+            throw e;
         } catch (final CellNotFoundException e) {
             log.error("flagCell:: Cell {} was not found !", flagCell, e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            throw e;
         } catch (final InvalidGameStatusException e) {
             log.error("flagCell:: Game {} is in an finished state !", gameId, e);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+            throw e;
         }
 
         return new ResponseEntity<>(flagCell, HttpStatus.OK);
@@ -96,33 +95,33 @@ public class GameController {
     public ResponseEntity<Cell> revealCell(@ApiParam(value = "Game ID. Required", required = true, type = "int")
                                            @NotNull @PathVariable final Integer gameId,
                                            @ApiParam(value = "The Cell with the coordinates to reveal the cell. Required", required = true, type = "Cell")
-                                           @NotNull @RequestBody Cell revealCell) {
+                                           @NotNull @RequestBody Cell revealCell) throws CellNotFoundException, GameOverException, ExistingCellException, InvalidGameStatusException, GameNotFoundException {
 
         log.info("revealCell:: Entering Reveal Cell for game {} and cell coordinates [{},{}] ...", gameId,
                 revealCell.getXCoordinate(), revealCell.getYCoordinate());
-        final Game game;
+        Game game = null;
         try {
             game = gameService.findById(gameId);
         } catch (final GameNotFoundException e) {
             log.error("revealCell:: Game {} was not found !", gameId, e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            throw e;
         } catch (final InvalidGameStatusException e) {
             log.error("flagCell:: Game {} is in an finished state !", gameId, e);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+            throw e;
         }
 
         try {
             revealCell = gameService.revealCell(game, revealCell);
         } catch (final ExistingCellException e) {
             log.error("revealCell:: Cell {} already exists !", revealCell, e);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+            throw e;
         } catch (final GameOverException e) {
             gameService.endGameAsFailed(game);
             log.error("revealCell:: CELL {} HAD A MINE ! BOOM - GAME OVER !", revealCell, e);
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage(), e);
+            throw e;
         } catch (final CellNotFoundException e) {
             log.error("flagCell:: Cell {} was not found !", revealCell, e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            throw e;
         }
 
         if (GameStatusEnum.COMPLETED.equals(game.getStatus())) {

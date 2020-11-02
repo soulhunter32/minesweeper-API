@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 /**
  * This controller handles user endpoints.-
@@ -50,14 +49,14 @@ public class UserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces =
             MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createUser(@ApiParam(value = "The user to crate. Required", required = true, type = "User")
-                                           @NotNull @RequestBody User user) {
+                                           @NotNull @RequestBody User user) throws ExistingUserException {
         log.info("createUser:: Entering Create new user with data {} ...", user.toString());
 
         try {
             user = userService.saveUser(user);
         } catch (final ExistingUserException e) {
             log.error("createUser:: User {} already exists, choose a new username !", user.getUsername(), e);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage(), e);
+            throw e;
         }
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);
@@ -79,18 +78,18 @@ public class UserController {
     public ResponseEntity<Game> createGame(@ApiParam(value = "User ID. Required", required = true, type = "int")
                                            @NotNull @PathVariable("userId") final Integer userId,
                                            @ApiParam(value = "Board settings. Required", required = true, type = "BoardSettings")
-                                           @NotNull @RequestBody final BoardSettings boardSettings) {
+                                           @NotNull @RequestBody final BoardSettings boardSettings) throws UserNotFoundException, InvalidBoardSettingsException {
         log.info("createGame:: Entering Create new newGame for user {} ...", userId);
 
-        final Game newGame;
+        Game newGame = null;
         try {
             newGame = gameService.createGame(userId, boardSettings);
         } catch (final InvalidBoardSettingsException e) {
             log.error("createGame:: There is an error on game settings", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+            throw e;
         } catch (final UserNotFoundException e) {
             log.error("createGame:: User {} was not found !", userId, e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+            throw e;
         }
 
         log.info("createGame:: New game created:  {} ...", newGame);

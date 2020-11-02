@@ -3,6 +3,7 @@ package com.deviget.minesweeper
 import com.deviget.minesweeper.client.MinesweeperClient
 import com.deviget.minesweeper.model.dto.BoardSettings
 import com.deviget.minesweeper.model.dto.Cell
+import com.deviget.minesweeper.model.dto.User
 import com.deviget.minesweeper.model.enums.FlagTypeEnum
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -16,9 +17,10 @@ class MinesweeperClientApplication
 fun main(args: Array<String>) {
 	runApplication<MinesweeperClientApplication>(*args)
 
-	//val createdUser = MinesweeperClient.createUser(User.builder().username("Pepe").build())
+	MinesweeperClient.authorize("minesweeper-api-core-user", "password")
+	val createdUser = MinesweeperClient.createUser(User.builder().username("Pepe").build())
 	val newGame = MinesweeperClient.createNewGame(
-		1,
+		createdUser?.id,
 		BoardSettings.builder().width(10).height(10).totalMines(10).build()
 	)
 

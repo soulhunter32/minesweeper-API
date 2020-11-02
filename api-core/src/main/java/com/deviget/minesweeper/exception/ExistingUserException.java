@@ -1,6 +1,8 @@
 package com.deviget.minesweeper.exception;
 
-public class ExistingUserException extends Exception {
+import com.deviget.minesweeper.exception.generic.MinesweeperConflictException;
+
+public class ExistingUserException extends MinesweeperConflictException {
 
 
     private static final long serialVersionUID = 5089524167351336546L;

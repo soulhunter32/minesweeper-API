@@ -12,13 +12,11 @@ import com.deviget.minesweeper.service.impl.UserService;
 import org.apache.logging.log4j.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -28,9 +26,6 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
 public class UserControllerTest extends AbstractControllerTest {
-
-    @Autowired
-    protected MockMvc apiMock;
 
     @MockBean
     protected GameService gameServiceMock;
@@ -53,9 +48,10 @@ public class UserControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(inputUser))).andReturn();
 
         assertEquals(HttpStatus.CONFLICT.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof ExistingUserException);
-        assertEquals("The user " + username + " already exists", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(ExistingUserException.class.getCanonicalName()));
+        assertEquals("The user " + username + " already exists", result.getResolvedException().getMessage());
     }
+
 
     @Test
     public void testCreateUser_withNewUsername_shouldSave() throws Exception {
@@ -76,6 +72,7 @@ public class UserControllerTest extends AbstractControllerTest {
         assertEquals(username, responseUser.getUsername());
     }
 
+
     @Test
     public void testCreateGame_withInvalidSettings_shouldThrowInvalidBoardSettingsException() throws Exception {
 
@@ -87,9 +84,10 @@ public class UserControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(boardSettings))).andReturn();
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof InvalidBoardSettingsException);
-        assertEquals(Strings.EMPTY, result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(InvalidBoardSettingsException.class.getCanonicalName()));
+        assertEquals(Strings.EMPTY, result.getResolvedException().getMessage());
     }
+
 
     @Test
     public void testCreateGame_withInvalidUserId_shouldThrowUserNotFoundException() throws Exception {
@@ -102,9 +100,10 @@ public class UserControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(mapToJson(boardSettings))).andReturn();
 
         assertEquals(HttpStatus.NOT_FOUND.value(), result.getResponse().getStatus());
-        assertTrue(result.getResolvedException().getCause() instanceof UserNotFoundException);
-        assertEquals("The user " + userId + " was not found", result.getResolvedException().getCause().getMessage());
+        assertTrue(result.getResolvedException().getClass().getName().equals(UserNotFoundException.class.getCanonicalName()));
+        assertEquals("The user " + userId + " was not found", result.getResolvedException().getMessage());
     }
+
 
     @Test
     public void testCreateGame_withValidUserIdAndSettings_shouldCreateSuccessfullyGame() throws Exception {

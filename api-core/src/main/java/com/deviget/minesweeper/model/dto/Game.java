@@ -28,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"id", "score", "user"}, allowGetters = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel(value = "Game", description = "A Minesweeper game")
 public class Game implements Serializable {
 
